@@ -17,6 +17,7 @@ t = twython.Twython(app_key=TWITTER_APP_KEY,
 class Twitter(game.Game):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
+    self.nl = iter([])
     
   def scroll(self, title, text):
     titlesprite = graphics.TextSprite(title, x=0, y=0, width=5, height=7)
@@ -30,17 +31,29 @@ class Twitter(game.Game):
       time.sleep(0.02)
       sprite.x -= 1
       self.graphics.draw(self.serial)
+      yield
     self.graphics.clear()
     self.sprites.remove(sprite)
     self.sprites.remove(titlesprite)
 
-  def loop(self):
-    search = t.search(q='#hackafe OR #bitcamp', count=10)
-    tweets = search['statuses']
+  def tweetloop(self, tweets):
     twats = {x['id']:(x['user']['name'], ' '.join(x['text'].split("\n"))) for x in tweets}
     for i in twats.keys():
-      self.scroll("@"+twats[i][0], twats[i][1])
-    self.scroll("#Hackafe", "Tweet us to get your text here!")
-    time.sleep(2)
+      yield from self.scroll("@"+twats[i][0], twats[i][1])
+    yield from self.scroll("#Hackafe", "Tweet us to get your text here!")
+    
+
+  def loop(self):
+    try:
+        next(self.nl)
+    except StopIteration:
+        try:
+            search = t.search(q='#hackafe OR #bitcamp', count=10)
+        except twython.exceptions.TwythonError:
+            pass
+        tweets = search['statuses']
+        self.nl = self.tweetloop(tweets)
+        time.sleep(2)
+
 
 GAME = Twitter
