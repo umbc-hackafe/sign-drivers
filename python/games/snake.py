@@ -2,7 +2,6 @@ import graphics
 import driver
 import game
 import random
-import pygame
 
 class Snake(game.Game):
     def __init__(self, *args, **kwargs):
@@ -29,13 +28,13 @@ class Snake(game.Game):
         self.handle_events()
 
         if self.playing:
-            if self.keys[pygame.K_a] and not self.direction[0]:
+            if 'a' in self.keys and not self.direction[0]:
                 self.direction = (-1, 0)
-            elif self.keys[pygame.K_d] and not self.direction[0]:
+            elif 'd' in self.keys and not self.direction[0]:
                 self.direction = (1, 0)
-            if self.keys[pygame.K_s] and not self.direction[1]:
+            if 's' in self.keys and not self.direction[1]:
                 self.direction = (0, 1)
-            elif self.keys[pygame.K_w] and not self.direction[1]:
+            elif 'w' in self.keys and not self.direction[1]:
                 self.direction = (0, -1)
 
             self.count = (self.count + 1) % 4
@@ -70,7 +69,7 @@ class Snake(game.Game):
                     self.sprites.add(self.food)
 
         else:
-            if self.keys[pygame.K_r]:
+            if 'r' in self.keys:
                 self.reset()
                 
         super().loop()

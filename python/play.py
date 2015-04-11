@@ -2,6 +2,7 @@
 
 import threading
 import argparse
+import curses
 import graphics
 import driver
 import time
@@ -41,7 +42,9 @@ def load(path):
         modules[name] = imp.load_source(name, os.path.join(path, f))
     return modules
 
-def main(argv):
+def main(stdscr, argv):
+    stdscr.nodelay(True)
+    
     print(os.path.join(os.path.dirname(__file__), 'games'))
     games = load(os.path.join(os.path.dirname(__file__), "games"))
 
@@ -55,12 +58,12 @@ def main(argv):
     args = parser.parse_args(argv)
 
     if args.dummy:
-        serial = driver.DummyDriver()
+        serial = driver.DummyDriver(stdscr)
     else:
         serial = driver.SerialDriver(args.serial_port)
 
     screen = graphics.Display()
-    game = games[args.game].GAME(screen, serial)
+    game = games[args.game].GAME(screen, serial, stdscr)
 
     if args.fifo:
         input_thread = threading.Thread(target=fifo_thread, args=(args.fifo, game), daemon=True)
@@ -72,4 +75,4 @@ def main(argv):
     game.run()
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    curses.wrapper(main, sys.argv[1:])

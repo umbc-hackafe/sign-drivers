@@ -1,7 +1,6 @@
 import graphics
 import driver
 import game
-import pygame
 
 class PixelMan(game.Game):
     def __init__(self, *args, **kwargs):
@@ -13,14 +12,14 @@ class PixelMan(game.Game):
     def loop(self):
         self.handle_events()
 
-        if self.keys[pygame.K_a]:
+        if 'a' in self.keys:
             self.pixel.x -= 1
-        elif self.keys[pygame.K_d]:
+        elif 'd' in self.keys:
             self.pixel.x += 1
-        if self.keys[pygame.K_s]:
-            self.pixel.y += 1
-        elif self.keys[pygame.K_w]:
+        if 'w' in self.keys:
             self.pixel.y -= 1
+        elif 's' in self.keys:
+            self.pixel.y += 1
             
         super().loop()
 

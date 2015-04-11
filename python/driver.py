@@ -14,12 +14,14 @@ def chunks(l, n):
         yield l[i:i+n]
 
 class DummyDriver:
-    def __init__(self, *args, **kwargs):
-        pass
+    def __init__(self, stdscr, *args, **kwargs):
+        self.stdscr = stdscr
 
     def draw(self, fb):
-        print("+" + "-"*112, "+")
-        for thing in chunks(list(fb), 112):
-            print('|' + ''.join(('#' if n else ' ' for n in thing)) + '|')
-        print("+" + "-"*112, "+")
-        print()
+        self.stdscr.clear()
+        self.stdscr.addstr(0, 0, "+" + "-" * 112 + "+")
+        for i, thing in enumerate(chunks(list(fb), 112), start=1):
+            self.stdscr.addstr(i, 0, '|' + ''.join(('#' if n else ' ' for n in thing)) + '|')
+        self.stdscr.addstr(16, 0, "+" + "-" * 112 + "+")
+        self.stdscr.refresh()
+

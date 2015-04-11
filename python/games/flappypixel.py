@@ -1,8 +1,8 @@
 import graphics
 import driver
 import game
-import pygame
 import random
+import string
 
 class FlappyPixel(game.Game):
     def __init__(self, *args, **kwargs):
@@ -50,7 +50,7 @@ class FlappyPixel(game.Game):
         self.handle_events()
 
         if self.playing:
-            if self.keys[pygame.K_w] and not self.up:
+            if set(string.ascii_lowercase + ' ').intersection(self.keys) and not self.up:
                 print("AHH")
                 self.up = 3
 
@@ -75,7 +75,7 @@ class FlappyPixel(game.Game):
 
             self.ticks += 1
         else:
-            if self.keys[pygame.K_r]:
+            if 'r' in self.keys:
                 self.reset()
             
         super().loop()
