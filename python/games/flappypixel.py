@@ -8,6 +8,12 @@ class FlappyPixel(game.Game):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        self.reset()
+
+    def reset(self):
+        self.sprites.clear()
+        self.playing = True
+        
         self.flappy = graphics.Rectangle(1, 1, x=24, y=0, wrapx=False, wrapy=False)
         self.sprites.add(self.flappy)
 
@@ -43,31 +49,35 @@ class FlappyPixel(game.Game):
     def loop(self):
         self.handle_events()
 
-        if self.keys[pygame.K_w] and not self.up:
-            print("AHH")
-            self.up = 3
+        if self.playing:
+            if self.keys[pygame.K_w] and not self.up:
+                print("AHH")
+                self.up = 3
 
-        if self.up and not self.ticks % 3:
-            self.up -= 1
-            self.flappy.y -= self.up
-        elif not self.ticks % 4:
-            self.flappy.y += 1
+            if self.up and not self.ticks % 3:
+                self.up -= 1
+                self.flappy.y -= self.up
+            elif not self.ticks % 4:
+                self.flappy.y += 1
 
-        if self.flappy.y > 15 or self.flappy.y < 0 or self.check_collision():
-            self.sprites = set([graphics.TextSprite("GAME OVER")])
-            super().loop()
+            if self.flappy.y > 15 or self.flappy.y < 0 or self.check_collision():
+                self.sprites = set([graphics.TextSprite("GAME OVER", width=5, height=7),
+                                    graphics.TextSprite("R TO RELOAD", width=5, height=7, y=8)])
+                self.playing = False
+                return
 
-            self.stop()
-            return
+            if not self.ticks % 3:
+                self.scroll_terrain()
 
-        if not self.ticks % 3:
-            self.scroll_terrain()
-
-        if not self.ticks % 45:
-            self.sprites.add(next(self.terrain))
+            if not self.ticks % 45:
+                self.sprites.add(next(self.terrain))
 
 
-        self.ticks += 1
+            self.ticks += 1
+        else:
+            if self.keys[pygame.K_r]:
+                self.reset()
+            
         super().loop()
 
 GAME = FlappyPixel

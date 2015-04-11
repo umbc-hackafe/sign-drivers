@@ -55,6 +55,9 @@ class Snake(game.Game):
                     self.sprites.add(graphics.TextSprite(
                         'GAME OVER. LEN:{}'.format(len(self.snake)),
                         width=5, height=7))
+                    self.sprites.add(graphics.TextSprite(
+                        'R TO RELOAD'.format(len(self.snake)),
+                        width=5, height=7, y=8))
                     self.playing = False
                     
                 if (self.snake[0].x, self.snake[0].y) == (self.food.x, self.food.y):
