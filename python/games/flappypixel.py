@@ -17,8 +17,13 @@ class FlappyPixel(game.Game):
         self.flappy = graphics.Rectangle(1, 1, x=24, y=0, wrapx=False, wrapy=False)
         self.sprites.add(self.flappy)
 
+        # XXX: hard-coded width
+        self.scoretext = graphics.TextSprite("0", width=4, height=4, x=1, y=0)
+        self.sprites.add(self.scoretext)
+
         self.terrain = self.terrain_gen()
         self.ticks = 0
+        self.score = 0
 
         self.up = 0
 
@@ -41,7 +46,7 @@ class FlappyPixel(game.Game):
 
     def scroll_terrain(self):
         for sprite in list(self.sprites):
-            if sprite is not self.flappy:
+            if sprite is not self.flappy and sprite is not self.scoretext:
                 sprite.x -= 1
                 if sprite.x < -sprite.width:
                     self.sprites.remove(sprite)
@@ -69,6 +74,8 @@ class FlappyPixel(game.Game):
 
             if not self.ticks % 45:
                 self.sprites.add(next(self.terrain))
+                self.score += 1
+                self.scoretext.set_text(str(self.score))
 
 
             self.ticks += 1
