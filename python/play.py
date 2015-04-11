@@ -18,6 +18,12 @@ def fifo_thread(fifo, game):
             else:
                 time.sleep(.01)
 
+def stdin_thread(game):
+    while True:
+        chars = input()
+        for char in chars:
+            game.send_input(char)
+
 def load(path):
     sys.path.insert(0, os.path.abspath(path))
 
@@ -42,6 +48,7 @@ def main(argv):
     parser = argparse.ArgumentParser()
     parser.add_argument("--serial-port", "-s", help="The serial port the teensy is connected to", type=str, default="/dev/ttyACM0")
     parser.add_argument("--fifo", "-f", help="The path to a fifo to use for input", type=str)
+    parser.add_argument("--stdin", "-i", help="Read input from stdin", action="store_true")
     parser.add_argument("--game", "-g", help="The game to play", choices=games.keys())
     parser.add_argument("--dummy", "-d", help="Use a dummy terminal output", action="store_true")
 
@@ -57,6 +64,9 @@ def main(argv):
 
     if args.fifo:
         input_thread = threading.Thread(target=fifo_thread, args=(args.fifo, game), daemon=True)
+        input_thread.start()
+    elif args.stdin:
+        input_thread = threading.Thread(target=stdin_thread, args=(game,), daemon=True)
         input_thread.start()
 
     game.run()
