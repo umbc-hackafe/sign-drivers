@@ -42,7 +42,7 @@ class FFT(game.Game):
         for i in range(len(fftData)):
             buckets.append(fftData[i]*math.log(i+1))
         buckets = np.array_split(fftData, cols)
-        buckets = [math.log(sum(x)/len(x))-self.offset for x in buckets]
+        buckets = [math.log(sum(x)/len(x)+1)-self.offset for x in buckets]
         buckets = [min(int((x*rows)/self.plotMax),self.plotMax*rows) for x in buckets]
         self.graphics.buffer = []
         for i in range(rows):

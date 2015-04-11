@@ -73,7 +73,7 @@ class Pong(game.Game):
             self.ball.y = 7
             self.ball.x = 56
             self.ball.yv = -1
-            self.ball.xv = 1
+            self.ball.xv = 2
             self.rscore += 1
             self.rightScore.set_text(str(self.rscore))
             if self.rscore == 10:
@@ -88,7 +88,7 @@ class Pong(game.Game):
             self.ball.y = 7
             self.ball.x = 56
             self.ball.yv = -1
-            self.ball.xv = -1
+            self.ball.xv = -2
             self.lscore += 1
             self.leftScore.set_text(str(self.lscore))
             if self.lscore == 10:
