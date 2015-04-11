@@ -10,6 +10,9 @@ import imp
 import sys
 import os
 
+game = None
+games = []
+
 def fifo_thread(fifo, game):
     with open(fifo) as f:
         while True:
@@ -39,13 +42,23 @@ def load(path):
         if f.startswith(".") or f.endswith("~") or f.endswith("#"):
             continue
         name = os.path.splitext(f)[0]
-        modules[name] = imp.load_source(name, os.path.join(path, f))
+
+        def closure(m, n, p):
+            m[n] = lambda: imp.load_source(n, p)
+
+        closure(modules, name, os.path.join(path, f))
     return modules
+
+def exec(name):
+    global game
+    game.stop()
+
+    game = games[name]().GAME(game.graphics, game.serial)
 
 def main(stdscr, argv):
     stdscr.nodelay(True)
-    
-    print(os.path.join(os.path.dirname(__file__), 'games'))
+
+    global games
     games = load(os.path.join(os.path.dirname(__file__), "games"))
 
     parser = argparse.ArgumentParser()
@@ -63,7 +76,9 @@ def main(stdscr, argv):
         serial = driver.SerialDriver(args.serial_port)
 
     screen = graphics.Display()
-    game = games[args.game].GAME(screen, serial, stdscr)
+
+    global game
+    game = games[args.game]().GAME(screen, serial, stdscr)
 
     if args.fifo:
         input_thread = threading.Thread(target=fifo_thread, args=(args.fifo, game), daemon=True)
