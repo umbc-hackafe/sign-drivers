@@ -69,7 +69,7 @@ def main(stdscr, argv):
     parser.add_argument("--serial-port", "-s", help="The serial port the teensy is connected to", type=str, default="/dev/ttyACM0")
     parser.add_argument("--fifo", "-f", help="The path to a fifo to use for input", type=str)
     parser.add_argument("--stdin", "-i", help="Read input from stdin", action="store_true")
-    parser.add_argument("--game", "-g", help="The game to play", choices=play.games.keys())
+    parser.add_argument("--game", "-g", help="The game to play", choices=play.games.keys(), default='menu')
     parser.add_argument("--dummy", "-d", help="Use a dummy terminal output", action="store_true")
 
     args = parser.parse_args(argv)

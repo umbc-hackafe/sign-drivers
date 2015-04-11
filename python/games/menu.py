@@ -30,16 +30,16 @@ class Menu(game.Game):
             'SPACE INVADERS',
         ]))
 
-        self.label = graphics.TextSprite(self.game_names[self.games[self.i]], width=5, height=7, x=10, y=4)
+        self.label = graphics.TextSprite('{} {}'.format(self.i + 1, self.game_names[self.games[self.i]]), width=5, height=7, x=5, y=4)
         self.sprites.add(self.label)
 
     def loop(self):
         if 'a' in self.keys:
             self.i = (self.i - 1) % len(self.games)
-            self.label.set_text(self.game_names[self.games[self.i]])
+            self.label.set_text('{} {}'.format(self.i + 1, self.game_names[self.games[self.i]]))
         elif 'd' in self.keys:
             self.i = (self.i + 1) % len(self.games)
-            self.label.set_text(self.game_names[self.games[self.i]])
+            self.label.set_text('{} {}'.format(self.i + 1, self.game_names[self.games[self.i]]))
 
         if '\n' in self.keys:
             self.play.exec_game(self.games[self.i])
