@@ -18,7 +18,7 @@ class Pong(game.Game):
         self.sprites.add(self.lpaddle)
         self.sprites.add(self.rpaddle)
         self.ball.yv = -1
-        self.ball.xv = -1
+        self.ball.xv = -2
         self.rscore = 0
         self.lscore = 0
         self.leftScore = graphics.TextSprite("0", x=20, y=0, width=5, height=7)
@@ -31,6 +31,7 @@ class Pong(game.Game):
         self.end = False
 
     def loop(self):
+        self.handle_events()
         if self.end:
             time.sleep(3)
             self.sprites = set()
@@ -46,21 +47,21 @@ class Pong(game.Game):
             self.end = False
             self.ball.x = 56
             self.ball.y = 7
-            self.ball.xv = -1
+            self.ball.xv = -2
             self.ball.yv = -1
-        if 'w' in self.keys:
-            self.lpaddle.y += 1
-            if self.lpaddle.y > 11:
-                 self.lpaddle.y = 11
         if 's' in self.keys:
+            self.lpaddle.y += 1
+            if self.lpaddle.y > 10:
+                 self.lpaddle.y = 10
+        if 'w' in self.keys:
             self.lpaddle.y -= 1
             if self.lpaddle.y < 0:
                  self.lpaddle.y = 0
-        if 'o' in self.keys:
-            self.rpaddle.y += 1
-            if self.rpaddle.y > 11:
-                 self.rpaddle.y = 11
         if 'l' in self.keys:
+            self.rpaddle.y += 1
+            if self.rpaddle.y > 10:
+                 self.rpaddle.y = 10
+        if 'o' in self.keys:
             self.rpaddle.y -= 1
             if self.rpaddle.y < 0:
                  self.rpaddle.y = 0
