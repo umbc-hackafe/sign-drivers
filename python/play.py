@@ -4,6 +4,7 @@ import threading
 import argparse
 import graphics
 import driver
+import time
 import imp
 import sys
 import os
@@ -11,7 +12,11 @@ import os
 def fifo_thread(fifo, game):
     with open(fifo) as f:
         while True:
-            game.send_input(f.read(1))
+            i = f.read(1)
+            if i:
+                game.send_input(i)
+            else:
+                time.sleep(.01)
 
 def load(path):
     sys.path.insert(0, os.path.abspath(path))
@@ -51,7 +56,7 @@ def main(argv):
     game = games[args.game].GAME(screen, serial)
 
     if args.fifo:
-        input_thread = threading.Thread(target=fifo_Thread, args=(args.fifo, game), daemon=True)
+        input_thread = threading.Thread(target=fifo_thread, args=(args.fifo, game), daemon=True)
         input_thread.start()
 
     game.run()
