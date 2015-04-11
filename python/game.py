@@ -17,8 +17,8 @@ class Game:
         for sprite in self.sprites:
             sprite.draw(self.graphics)
 
-        self.graphics.draw()
-        time.sleep(1 / framerate)
+        self.graphics.draw(self.serial)
+        time.sleep(1 / self.framerate)
 
     def stop(self):
         self.running = False
