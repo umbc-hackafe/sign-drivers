@@ -44,7 +44,6 @@ void initialize() {
     pinMode(BIT0, OUTPUT);
     pinMode(BIT1, OUTPUT);
     pinMode(BIT2, OUTPUT);
-    pinMode(13, OUTPUT);
     pinMode(SYNC, OUTPUT);
 
     currentRow = 0;
@@ -54,7 +53,6 @@ void initialize() {
 extern "C" int main(void) {
   initialize();
   elapsedMillis refresh = 0;
-  elapsedMillis blink = 0;
   int* img = (int*)img1;
   int *nimg = (int*)img2;
   
@@ -67,13 +65,14 @@ extern "C" int main(void) {
     digitalWrite(SYNC, currentRow);
     for(int col = 0; col < COLS; col++) {
       digitalWrite(DAT, img[currentRow*COLS + col] ? HIGH : LOW);
-      digitalWrite(CLK, HIGH);
       digitalWrite(CLK, LOW);
+      delayMicroseconds(2);
+      digitalWrite(CLK, HIGH);
     }
     setRow(ROWS - currentRow - 1);
     currentRow++;
     currentRow %= 16;
-    for (int i=0; i<112; i++) {
+    for (int i=0; i<118; i++) {
       if (Serial.available()) {
         serialbuffer[serialEnd] = Serial.read();
         serialEnd++;
@@ -110,11 +109,6 @@ extern "C" int main(void) {
         serialEnd = 0;
       }
     } 
-    if (blink > 500) {
-      digitalWrite(13, ledState);
-      ledState = !ledState;
-      blink -= 500;
-    }
     refresh = 0;
   }
 }
