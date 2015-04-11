@@ -68,9 +68,9 @@ class Circle(Sprite):
 
 
 class CharacterSprite(Sprite):
-    # XXX: replace hardcoding here
-    with open('font/4x4.json', 'r') as f:
-        fontspec = json.load(f)
+    class FontError(Exception): pass
+    class FontNotImplementedError(FontError): pass
+    fontspecs = {}
 
     def __init__(self, letter, *args, width=4, height=4, **kwargs):
         super().__init__(*args, **kwargs)
@@ -78,10 +78,23 @@ class CharacterSprite(Sprite):
         self.width  = width
         self.height = height
 
+        # If not loaded, load the appropriate font size from a file.
+        dimensionstr = "%dx%d" % (width, height)
+        if (dimensionstr not in type(self).fontspecs):
+            try:
+                with open("font/%s.json" % dimensionstr, 'r') as f:
+                    type(self).fontspecs[dimensionstr] = json.load(f)
+            except FileNotFoundError as e:
+                raise type(self).FontNotImplementedError(dimensionstr)
+            except ValueError as e:
+                raise type(self).FontError(e)
+
+        self.fontspec = type(self).fontspecs[dimensionstr]
+
     def draw(self, display):
         # Get the letter, or a block if not available
         # XXX: document the uppercase more explicitly
-        tflist = type(self).fontspec.get(self.letter.upper(), type(self).fontspec["__block__"])
+        tflist = self.fontspec.get(self.letter.upper(), self.fontspec["__block__"])
         # Split the list into a nice matrix
         tfmatrix = ((tflist[i:i+self.width] for i in range(0, len(tflist), self.width)))
         for rownum, row in enumerate(tfmatrix):
