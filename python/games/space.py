@@ -83,7 +83,7 @@ class Space(game.Game):
                 self.sprites.add(newBullet)
         for i in self.enemyBullets:
             i.x += i.speed
-            if i.x == self.ship.x and i.y == self.ship.y:
+            if i.x == self.ship.x and i.y >= self.ship.y:
                 self.lose()
         toremove = list()
         invadersToRemove = list()
