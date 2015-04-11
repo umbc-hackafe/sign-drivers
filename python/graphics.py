@@ -66,6 +66,7 @@ class Circle(Sprite):
                 if math.sqrt(dx*dx + dy*dy) < self.radius:
                     display.buffer[r][c] = 1
 
+
 class CharacterSprite(Sprite):
     # XXX: replace hardcoding here
     with open('font/4x4.json', 'r') as f:
@@ -87,6 +88,26 @@ class CharacterSprite(Sprite):
                         self.x < display.width):
                     display.buffer[rownum + self.y][colnum + self.x] = pixel
 
+class TextSprite(Sprite):
+    def __init__(self, text, *args, width=4, height=4, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.width = width
+        self.height = height
+        self.set_text(text)
+
+    def set_text(self, text):
+        self.text = text.upper()
+        self.sprites = [CharacterSprite(c, y=self.y, width=self.width, height=self.height) for c in self.text]
+        
+        for i, x in enumerate(range(
+                int(self.x),
+                int(self.x + (self.width + 1) * len(self.sprites)), self.width + 1)):
+            self.sprites[i].x = x
+
+    def draw(self, display):
+        for sprite in self.sprites:
+            sprite.draw(display)
+                       
 if __name__ == '__main__':
     disp = Display()
     circ = Circle(4, 15/2+1, 15/2)
@@ -95,10 +116,13 @@ if __name__ == '__main__':
     charH = CharacterSprite("H", x=31, y=5)
     charI = CharacterSprite("I", x=36, y=5)
 
+    world = TextSprite("World", x=41, y=5)
+
     circ.draw(disp)
     rect.draw(disp)
     wrect.draw(disp)
     charH.draw(disp)
     charI.draw(disp)
+    world.draw(disp)
 
     print(disp)
