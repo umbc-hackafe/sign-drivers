@@ -86,17 +86,16 @@ class CharacterSprite(Sprite):
                     type(self).fontspecs[dimensionstr] = json.load(f)
             except FileNotFoundError as e:
                 raise type(self).FontNotImplementedError(dimensionstr)
-            except ValueError as e:
-                raise type(self).FontError(e)
+            # except ValueError as e:
+            #     raise type(self).FontError(str(e))
 
         self.fontspec = type(self).fontspecs[dimensionstr]
 
     def draw(self, display):
         # Get the letter, or a block if not available
         # XXX: document the uppercase more explicitly
-        tflist = self.fontspec.get(self.letter.upper(), self.fontspec["__block__"])
-        # Split the list into a nice matrix
-        tfmatrix = ((tflist[i:i+self.width] for i in range(0, len(tflist), self.width)))
+        tfmatrix = self.fontspec.get(self.letter.upper(),
+                [[1]*self.width]*self.height)
         for rownum, row in enumerate(tfmatrix):
             for colnum, pixel in enumerate(row):
                 if (0 <= rownum + self.y < display.height) and (0 <= colnum +
