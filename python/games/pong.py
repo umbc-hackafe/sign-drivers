@@ -31,7 +31,6 @@ class Pong(game.Game):
         self.end = False
 
     def loop(self):
-        self.handle_events()
         if self.end:
             time.sleep(3)
             self.sprites = set()
