@@ -25,5 +25,13 @@ class Sprite(object):
     def draw(self, display):
         pass
 
+class Rectangle(Sprite):
+    def __init__(self, width, height, **kwargs):
+        super().__init__(**kwargs)
+        self.width = width
+        self.height = height
 
-        
+    def draw(self, display):
+        for r in range(max(self.y, 0), min(self.y + self.height + 1, display.height)):
+            for c in range(max(self.x, 0), min(self.x + self.width + 1, display.width)):
+                display.buffer[r][c] = 1
