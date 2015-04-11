@@ -83,10 +83,17 @@ class Space(game.Game):
                 self.sprites.add(newBullet)
         for i in self.enemyBullets:
             i.x += i.speed
-            if i.x == self.ship.x and i.y >= self.ship.y:
+            if i.x >= self.ship.x and i.y == self.ship.y:
                 self.lose()
         toremove = list()
         invadersToRemove = list()
+        invaderBulletsToRemove = list()
+        for i in self.enemyBullets:
+            if i.x >= 112: 
+                invaderBulletsToRemove.append(i)
+        for i in invaderBulletsToRemove:
+            if i in self.enemyBullets:
+                self.enemyBullets.remove(i)
         for i in self.bullets:
             if i.x < 0:
                 toremove.append(i)
