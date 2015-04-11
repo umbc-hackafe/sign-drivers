@@ -17,7 +17,7 @@ class Shell(game.Game):
         self.sprites.add(self.prompt)
         self.sprites.add(self.user_in)
 
-    def handle_events(self):
+#    def handle_events(self):
 #        try:
 #            while True:
 #                key = self.stdscr.getkey().lower()
