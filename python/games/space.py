@@ -68,18 +68,21 @@ class Space(game.Game):
                 i.x += 1
         if upperY == 0:
             self.direction *= -1
+            for i in self.invaders:
+                i.x += 1
         for i in self.invaders:
             i.y += self.direction
         if fire:
             newBullet = graphics.Rectangle(x=self.ship.x, y=self.ship.y, width=1, height=1)
             self.bullets.append(newBullet)
         for i in self.invaders:
-            if random.random() < 0.0051:
+            if random.random() < 0.02:
                 newBullet = graphics.Rectangle(x=i.x, y=i.y, width=1, height=1)
+                newBullet.speed=random.randint(1,3)
                 self.enemyBullets.append(newBullet)
                 self.sprites.add(newBullet)
         for i in self.enemyBullets:
-            i.x += 1
+            i.x += i.speed
             if i.x == self.ship.x and i.y == self.ship.y:
                 self.lose()
         toremove = list()
