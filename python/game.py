@@ -18,7 +18,7 @@ class Game:
     def send_input(self, name):
         self.input_queue.put(name)
 
-    def loop(self):
+    def handle_events(self):
         self.old_keys = self.keys[:]
         for event in pygame.event.get():
             if event.type == pygame.QUIT: sys.exit()
@@ -27,6 +27,7 @@ class Game:
             if event.type == pygame.KEYUP:
                 self.keys[event.key] = False
         
+    def loop(self):
         self.graphics.clear()
         for sprite in self.sprites:
             sprite.draw(self.graphics)
