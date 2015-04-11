@@ -81,7 +81,7 @@ class CharacterSprite(Sprite):
     def draw(self, display):
         # Get the letter, or a block if not available
         # XXX: document the uppercase more explicitly
-        tflist = type(self).fontspec.get(self.letter.upper(), fontspec["__block__"])
+        tflist = type(self).fontspec.get(self.letter.upper(), type(self).fontspec["__block__"])
         # Split the list into a nice matrix
         tfmatrix = ((tflist[i:i+self.width] for i in range(0, len(tflist), self.width)))
         for rownum, row in enumerate(tfmatrix):
