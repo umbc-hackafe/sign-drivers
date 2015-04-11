@@ -10,8 +10,6 @@ class PixelMan(game.Game):
         self.sprites.add(self.pixel)
 
     def loop(self):
-        self.handle_events()
-
         if 'a' in self.keys:
             self.pixel.x -= 1
         elif 'd' in self.keys:

@@ -5,7 +5,8 @@ import sys
 
 class Game:
     
-    def __init__(self, graphics, serial, stdscr, framerate=30):
+    def __init__(self, graphics, serial, stdscr, play, framerate=30):
+        self.play = play
         self.stdscr = stdscr
         self.graphics = graphics
         self.serial = serial
@@ -23,6 +24,9 @@ class Game:
         try:
             while True:
                 key = self.stdscr.getkey().lower()
+                if key == '\x1b':
+                    self.play.exec_game('menu')
+                    return
                 self.keys.add(key)
         except curses.error:
             pass
@@ -48,4 +52,5 @@ class Game:
     def run(self):
         self.running = True
         while self.running:
+            self.handle_events()
             self.loop()

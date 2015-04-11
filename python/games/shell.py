@@ -34,8 +34,6 @@ class Shell(game.Game):
             
         
     def loop(self):
-        self.handle_events()
-
         self.user_in.set_text(''.join(self.user_in_buf))
         
         super().loop()

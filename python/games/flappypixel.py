@@ -47,8 +47,6 @@ class FlappyPixel(game.Game):
                     self.sprites.remove(sprite)
 
     def loop(self):
-        self.handle_events()
-
         if self.playing:
             if set(string.ascii_lowercase + ' ').intersection(self.keys) and not self.up:
                 print("AHH")

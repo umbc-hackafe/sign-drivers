@@ -44,7 +44,6 @@ class Space(game.Game):
         self.sprites.add(self.loseText)
 
     def loop(self):
-        self.handle_events()
         fire = False
         if 's' in self.keys or 'a' in self.keys:
             self.ship.y += 1

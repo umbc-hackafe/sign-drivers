@@ -25,8 +25,6 @@ class Snake(game.Game):
         self.count = 0
 
     def loop(self):
-        self.handle_events()
-
         if self.playing:
             if 'a' in self.keys and not self.direction[0]:
                 self.direction = (-1, 0)
