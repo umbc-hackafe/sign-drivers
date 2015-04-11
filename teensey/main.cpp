@@ -5,6 +5,7 @@
 #define ROWS 15
 #define COLS 112
 
+#define SYNC 10
 #define CLK 11
 #define DAT 12
 #define HIBANK 3
@@ -13,7 +14,7 @@
 #define BIT1 1
 #define BIT2 2
 
-#define bufferSize 512
+#define bufferSize 2048
 
 int serialbuffer[bufferSize];
 int img1[ROWS][COLS];
@@ -23,19 +24,16 @@ int currentRow;
 int serialEnd;
 
 void setRow(int row) {
-  if (row < 8 & row < 16) {
-    digitalWriteFast(HIBANK, LOW);
-    digitalWriteFast(LOBANK, HIGH);
-  } else if (row < 16) {
-    digitalWriteFast(HIBANK, HIGH);
-    digitalWriteFast(LOBANK, LOW);
-  } else {
-    digitalWriteFast(HIBANK, LOW);
-    digitalWriteFast(LOBANK, LOW);
+  digitalWrite(LOBANK, HIGH);
+  digitalWrite(HIBANK, HIGH);
+  digitalWrite(BIT0, row & 1);
+  digitalWrite(BIT1, row & 2);
+  digitalWrite(BIT2, row & 4);
+  if ((row < 8) & (row < 16) & (row >= 0)) {
+    digitalWrite(HIBANK, LOW);
+  } else if ((row >= 8) & (row < 16)) {
+    digitalWrite(LOBANK, LOW);
   }
-  digitalWriteFast(BIT0, row & 1);
-  digitalWriteFast(BIT1, row & 2);
-  digitalWriteFast(BIT2, row & 4);
 }
 
 void initialize() {
@@ -46,6 +44,8 @@ void initialize() {
     pinMode(BIT0, OUTPUT);
     pinMode(BIT1, OUTPUT);
     pinMode(BIT2, OUTPUT);
+    pinMode(13, OUTPUT);
+    pinMode(SYNC, OUTPUT);
 
     currentRow = 0;
     serialEnd = 0;
@@ -54,32 +54,42 @@ void initialize() {
 extern "C" int main(void) {
   initialize();
   elapsedMillis refresh = 0;
+  elapsedMillis blink = 0;
   int* img = (int*)img1;
   int *nimg = (int*)img2;
   
+  int ledState = 0;
+
   Serial.begin(9600);
 
   while(1) {
+    setRow(16);
+    digitalWrite(SYNC, currentRow);
     for(int col = 0; col < COLS; col++) {
-      digitalWriteFast(DAT, img[currentRow*ROWS + col] ? HIGH : LOW);
-      digitalWriteFast(CLK, HIGH);
-      digitalWriteFast(CLK, LOW);
+      digitalWrite(DAT, img[currentRow*COLS + col] ? HIGH : LOW);
+      digitalWrite(CLK, HIGH);
+      digitalWrite(CLK, LOW);
     }
-    setRow(currentRow);
+    setRow(ROWS - currentRow - 1);
     currentRow++;
-    currentRow %= 15;
-    while (refresh < 10) {
+    currentRow %= 16;
+    for (int i=0; i<112; i++) {
       if (Serial.available()) {
         serialbuffer[serialEnd] = Serial.read();
         serialEnd++;
       }
+      if (serialEnd == 1) {
+        if (serialbuffer[0] != 0xCA) {
+          serialEnd = 0;
+        }
+      }
       if (serialEnd == 2) {
-        if ((serialbuffer[0] != 0xCA) | (serialbuffer[1] != 0xFE)) {
+        if (serialbuffer[1] != 0xFE) {
           serialEnd = 0;
         }
       }
       if (serialEnd > 2) {
-        if (serialbuffer[3] == 0x00) { //Blit frame
+        if (serialbuffer[2] == 0x00) { //Blit frame
           if (img == (int*)img1) {
             img = (int*)img2;
             nimg = (int*)img1;
@@ -88,19 +98,23 @@ extern "C" int main(void) {
             nimg = (int*)img2;
           }
           serialEnd = 0;
-          currentRow = 0;
         }
-        if ((serialbuffer[3] == 0x01) & (serialEnd == COLS*ROWS+3)) {
+        if ((serialbuffer[2] == 0x01) & (serialEnd == COLS*ROWS+3)) {
           for (int i=0; i<COLS*ROWS; i++) {
             nimg[i] = serialbuffer[i+3];
           }
+          serialEnd = 0;
         }
       }
       if (serialEnd > bufferSize) {
         serialEnd = 0;
       }
     } 
-    setRow(16);
-    refresh -= 10;
+    if (blink > 500) {
+      digitalWrite(13, ledState);
+      ledState = !ledState;
+      blink -= 500;
+    }
+    refresh = 0;
   }
 }
