@@ -101,12 +101,14 @@ class TextSprite(Sprite):
         self.text = text.upper()
         self.sprites = [CharacterSprite(c, y=self.y, width=self.width, height=self.height) for c in self.text]
         
+
+    def draw(self, display):
         for i, x in enumerate(range(
                 int(self.x),
                 int(self.x + (self.width + 1) * len(self.sprites)), self.width + 1)):
             self.sprites[i].x = x
+            self.sprites[i].y = self.y
 
-    def draw(self, display):
         for sprite in self.sprites:
             sprite.draw(display)
                        
