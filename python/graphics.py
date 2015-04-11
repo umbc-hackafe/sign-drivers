@@ -1,6 +1,7 @@
 import driver
 import itertools
 import math
+import json
 
 class Display(object):
     def __init__(self, width=112, height=15):
@@ -65,14 +66,39 @@ class Circle(Sprite):
                 if math.sqrt(dx*dx + dy*dy) < self.radius:
                     display.buffer[r][c] = 1
 
+class CharacterSprite(Sprite):
+    # XXX: replace hardcoding here
+    with open('font/4x4.json', 'r') as f:
+        fontspec = json.load(f)
+
+    def __init__(self, letter, *args, width=4, height=4, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.letter = letter
+        self.width  = width
+        self.height = height
+
+    def draw(self, display):
+        tflist = type(self).fontspec.get(self.letter)
+        # Split the list into a nice matrix
+        tfmatrix = ((tflist[i:i+self.width] for i in range(0, len(tflist), self.width)))
+        for rownum, row in enumerate(tfmatrix):
+            for colnum, pixel in enumerate(row):
+                if (0 < rownum + self.y < display.height) and (0 < colnum +
+                        self.x < display.width):
+                    display.buffer[rownum + self.y][colnum + self.x] = pixel
+
 if __name__ == '__main__':
     disp = Display()
     circ = Circle(4, 15/2+1, 15/2)
     rect = Rectangle(3, 4, 25, 5)
     wrect = Rectangle(4, 4, 0, -1, wrapx=True, wrapy=True)
+    charH = CharacterSprite("H", x=31, y=5)
+    charI = CharacterSprite("I", x=36, y=5)
 
     circ.draw(disp)
     rect.draw(disp)
     wrect.draw(disp)
+    charH.draw(disp)
+    charI.draw(disp)
 
     print(disp)
