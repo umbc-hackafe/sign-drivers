@@ -24,7 +24,6 @@ class Display(object):
         for r in range(self.height):
             l[r] = ''.join('#' if i else ' ' for i in self.buffer[r]) + '\n'
         return ''.join(l)
-                
 
 class Sprite(object):
     def __init__(self, x=0, y=0):
@@ -33,6 +32,39 @@ class Sprite(object):
     
     def draw(self, display):
         pass
+
+class DisplayBox(Sprite):
+    def __init__(self, *args, width=112, height=15, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.width = width
+        self.height = height
+        self.buffer = [0] * height
+        self.sprites = []
+        for i in range(height):
+            self.buffer[i] = [0] * width
+
+    def add(self, sprite):
+        self.sprites.append(sprite)
+
+    def clear(self):
+        for r in range(self.height):
+            for c in range(self.width):
+                self.buffer[r][c] = 0
+
+    def draw(self, display):
+        self.clear()
+        for sprite in self.sprites:
+            sprite.draw(self)
+        for row in range(0, self.height):
+            for col in range(0, self.width):
+                # It must be within both the actual and the virtual display
+                # bounds in order to be drawn.
+                if (0 <= row < self.height) \
+                        and (0 <= self.y + row < display.height) \
+                        and (0 <= col < self.width) \
+                        and (0 <= self.x + col < display.width):
+                    display.buffer[self.y + row][self.x + col] = self.buffer[row][col]
+
 
 class Rectangle(Sprite):
     def __init__(self, width, height, *args, wrapx=False, wrapy=False, **kwargs):
@@ -123,7 +155,7 @@ class TextSprite(Sprite):
 
         for sprite in self.sprites:
             sprite.draw(display)
-                       
+
 if __name__ == '__main__':
     disp = Display()
     circ = Circle(4, 15/2+1, 15/2)
@@ -131,6 +163,10 @@ if __name__ == '__main__':
     wrect = Rectangle(4, 4, 0, -1, wrapx=True, wrapy=True)
     charH = CharacterSprite("H", x=31, y=5)
     charI = CharacterSprite("I", x=36, y=5)
+    dispbox = DisplayBox(x=20, y=12, width=5, height=5)
+    rectbox = Rectangle(10, 10, 0, 0)
+
+    dispbox.add(rectbox)
 
     world = TextSprite("World", x=41, y=5)
 
@@ -140,5 +176,6 @@ if __name__ == '__main__':
     charH.draw(disp)
     charI.draw(disp)
     world.draw(disp)
+    dispbox.draw(disp)
 
     print(disp)
