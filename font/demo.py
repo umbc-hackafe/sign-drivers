@@ -17,21 +17,27 @@ def render(dimensions, tflist):
 
     return strmatrix
 
+def printletter(fontspec, letter):
+    dimensions = fontspec['__dimensions__']
+    if letter in fontspec:
+        strmatrix = render(dimensions, fontspec[letter])
+        for row in strmatrix:
+            print("    %s" % ''.join(row))
+    else:
+        print("%s: letter missing!" % letter)
+
 def main(args):
     with open(args.file, 'r') as f:
         fontspec = json.load(f)
 
-    dimensions = fontspec['__dimensions__']
 
-    if args.letter:
+    if args.string:
+        for letter in args.string:
+            printletter(fontspec, letter)
+    elif args.letter:
         for letter in args.letter:
-            if letter in fontspec:
-                strmatrix = render(dimensions, fontspec[letter])
-                print("%s:" % letter)
-                for row in strmatrix:
-                    print("    %s" % ''.join(row))
-            else:
-                print("%s: letter missing!" % letter)
+            print("%s:" % letter)
+            printletter(fontspec, letter)
 
     else:
         for letter, tflist in fontspec.items():
@@ -39,16 +45,15 @@ def main(args):
             if letter.startswith("__"):
                 continue
             else:
-                strmatrix = render(dimensions, tflist)
                 print("%s:" % letter)
-                for row in strmatrix:
-                    print("    %s" % ''.join(row))
+                printletter(fontpsec, letter)
 
 
 def parse(args):
     parser = argparse.ArgumentParser()
     parser.add_argument("--file", "-f", type=str, default="4x4.json")
-    parser.add_argument("letter", type=str, default=None, nargs="*")
+    parser.add_argument("--letter", "-l", type=str, default=None, nargs="*")
+    parser.add_argument("--string", "-s", type=str, default=None, nargs="?")
     return parser.parse_args(args)
 
 if __name__ == "__main__":
