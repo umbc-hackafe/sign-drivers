@@ -67,7 +67,7 @@ extern "C" int main(void) {
     for(int col = 0; col < COLS; col++) {
       digitalWrite(DAT, img[currentRow*COLS + col] ? HIGH : LOW);
       digitalWrite(CLK, LOW);
-      delayMicroseconds(2);
+      delayMicroseconds(3);
       digitalWrite(CLK, HIGH);
     }
     setRow(ROWS - currentRow - 1);
