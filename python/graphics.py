@@ -46,7 +46,7 @@ class Rectangle(Sprite):
     def draw(self, display):
         for r in range(round(self.y), round(self.y + self.height)):
             for c in range(round(self.x), round(self.x + self.width)):
-                if (0 < r < display.height or self.wrapy) and (0 < c < display.width or self.wrapx):
+                if (0 <= r < display.height or self.wrapy) and (0 <= c < display.width or self.wrapx):
                     display.buffer[r % display.height][c % display.width] = 1
 
 class Circle(Sprite):
@@ -86,7 +86,7 @@ class CharacterSprite(Sprite):
         tfmatrix = ((tflist[i:i+self.width] for i in range(0, len(tflist), self.width)))
         for rownum, row in enumerate(tfmatrix):
             for colnum, pixel in enumerate(row):
-                if (0 < rownum + self.y < display.height) and (0 < colnum +
+                if (0 <= rownum + self.y < display.height) and (0 <= colnum +
                         self.x < display.width):
                     display.buffer[rownum + self.y][colnum + self.x] = pixel
 
