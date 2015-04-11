@@ -17,6 +17,8 @@ class DummyDriver:
         pass
 
     def draw(self, fb):
+        print("+" + "-"*112, "+")
         for thing in chunks(list(fb), 112):
-            print(''.join(('#' if n else ' ' for n in thing)))
+            print('|' + ''.join(('#' if n else ' ' for n in thing)) + '|')
+        print("+" + "-"*112, "+")
         print()
