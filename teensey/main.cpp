@@ -45,6 +45,7 @@ void initialize() {
     pinMode(BIT1, OUTPUT);
     pinMode(BIT2, OUTPUT);
     pinMode(SYNC, OUTPUT);
+    pinMode(13, OUTPUT);
 
     currentRow = 0;
     serialEnd = 0;
@@ -74,21 +75,25 @@ extern "C" int main(void) {
     currentRow %= 16;
     for (int i=0; i<118; i++) {
       if (Serial.available()) {
+        digitalWrite(13, HIGH);
         serialbuffer[serialEnd] = Serial.read();
         serialEnd++;
       }
       if (serialEnd == 1) {
         if (serialbuffer[0] != 0xCA) {
+          digitalWrite(13, LOW);
           serialEnd = 0;
         }
       }
       if (serialEnd == 2) {
         if (serialbuffer[1] != 0xFE) {
+          digitalWrite(13, LOW);
           serialEnd = 0;
         }
       }
       if (serialEnd > 2) {
         if (serialbuffer[2] == 0x00) { //Blit frame
+          digitalWrite(13, LOW);
           if (img == (int*)img1) {
             img = (int*)img2;
             nimg = (int*)img1;
@@ -102,10 +107,12 @@ extern "C" int main(void) {
           for (int i=0; i<COLS*ROWS; i++) {
             nimg[i] = serialbuffer[i+3];
           }
+          digitalWrite(13, LOW);
           serialEnd = 0;
         }
       }
       if (serialEnd > bufferSize) {
+        digitalWrite(13, LOW);
         serialEnd = 0;
       }
     } 
