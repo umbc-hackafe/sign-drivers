@@ -31,7 +31,6 @@ class Button(game.Game):
 
         regex = re.compile(r"(wss://wss\.redditmedia\.com/thebutton\?h=[^\"]*)")
         url = requests.get("https://www.reddit.com/r/thebutton")
-        print(url.text)
         try:
             url = re.search(regex, requests.get("https://www.reddit.com/r/thebutton").text).group(1)
         except:

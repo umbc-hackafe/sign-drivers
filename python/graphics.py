@@ -1,6 +1,7 @@
 import driver
 import itertools
 import math
+import os.path
 import json
 
 class Display(object):
@@ -117,7 +118,9 @@ class CharacterSprite(Sprite):
         dimensionstr = "%dx%d" % (width, height)
         if (dimensionstr not in type(self).fontspecs):
             try:
-                with open("font/%s.json" % dimensionstr, 'r') as f:
+                with open(os.path.join(os.path.dirname(
+                        os.path.abspath(__file__)), "font",
+                        "%s.json" % dimensionstr), 'r') as f:
                     type(self).fontspecs[dimensionstr] = json.load(f)
             except FileNotFoundError as e:
                 raise type(self).FontNotImplementedError(dimensionstr)
