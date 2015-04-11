@@ -7,6 +7,7 @@ class SerialDriver:
     def draw(self, fb):
         self.serial.write(b"\xCA\xFE\x01")
         self.serial.write(bytes(fb))
+        self.serial.write(b"\xCA\xFE\x00")
 
 def chunks(l, n):
     for i in range(0, len(l), n):
