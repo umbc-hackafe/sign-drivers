@@ -36,8 +36,9 @@ class Twitter(game.Game):
     self.sprites.remove(sprite)
     self.sprites.remove(titlesprite)
 
+<<<<<<< HEAD
   def tweetloop(self, tweets):
-    twats = {x['id']:(x['user']['name'], ' '.join(x['text'].split("\n"))) for x in tweets}
+    twats = {x['id']:(x['user']['screen_name'], ' '.join(x['text'].split("\n"))) for x in tweets}
     for i in twats.keys():
       yield from self.scroll("@"+twats[i][0], twats[i][1])
     yield from self.scroll("#Hackafe", "Tweet us to get your text here!")
