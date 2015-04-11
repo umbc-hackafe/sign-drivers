@@ -35,7 +35,7 @@ class Snake(game.Game):
             elif 'w' in self.keys and not self.direction[1]:
                 self.direction = (0, -1)
 
-            self.count = (self.count + 1) % 4
+            self.count = (self.count + 1) % 2
 
             if not self.count:
                 for i in range(len(self.snake) - 1, 0, -1):
