@@ -4,6 +4,17 @@ import queue
 import sys
 
 class Game:
+    keymap = {
+        'a': pygame.K_a,
+        'w': pygame.K_w,
+        's': pygame.K_s,
+        'd': pygame.K_d,
+        'A': pygame.K_a,
+        'W': pygame.K_w,
+        'S': pygame.K_s,
+        'D': pygame.K_d,
+    }
+    
     def __init__(self, graphics, serial, framerate=30):
         pygame.init()
         pygame.display.set_mode((50,50))
@@ -26,6 +37,17 @@ class Game:
                 self.keys[event.key] = True
             if event.type == pygame.KEYUP:
                 self.keys[event.key] = False
+
+        try:
+            while True:
+                item = self.input_queue.get_nowait()
+                if item.islower():
+                    self.keys[type(self).keymap[item]] = False
+                else:
+                    self.keys[type(self).keymap[item]] = True
+                    
+        except queue.Empty:
+            pass
         
     def loop(self):
         self.graphics.clear()
