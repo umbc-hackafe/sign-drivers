@@ -19,3 +19,11 @@ class Game:
 
         self.graphics.draw()
         time.sleep(1 / framerate)
+
+    def stop(self):
+        self.running = False
+
+    def run(self):
+        self.running = True
+        while self.running:
+            self.loop()
