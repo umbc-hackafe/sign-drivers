@@ -17,7 +17,7 @@ class Button(game.Game):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.timer = graphics.Rectangle(112-12, 15, x=12, y=0)
+        self.timer = graphics.Rectangle(112-12, 7, x=12, y=0)
         self.text_top = graphics.TextSprite("60", x=0, y=0, width=5, height=7)
         self.text_bottom = graphics.TextSprite("00", x=0, y=8, width=5, height=7)
         self.time = 60.00
@@ -26,6 +26,7 @@ class Button(game.Game):
         self.sprites.add(self.timer)
         self.sprites.add(self.text_top)
         self.sprites.add(self.text_bottom)
+        self.sprites.add(graphics.TextSprite("/r/thebutton", x=16, y=8, width=5, height=7))
 
 
         regex = re.compile(r"(wss://wss\.redditmedia\.com/thebutton\?h=[^\"]*)")
