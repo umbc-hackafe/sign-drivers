@@ -1,3 +1,7 @@
+#include "teensy3/WProgram.h"
+#include "teensy3/core_pins.h"
+#include "teensy3/usb_serial.h"
+
 #define ROWS 15
 #define COLS 112
 
@@ -11,9 +15,9 @@
 
 #define bufferSize 512
 
-const int serialbuffer[bufferSize];
-const int img1[ROWS][COLS];
-const int img2[ROWS][COLS];
+int serialbuffer[bufferSize];
+int img1[ROWS][COLS];
+int img2[ROWS][COLS];
 
 int currentRow;
 int serialEnd;
@@ -35,13 +39,13 @@ void setRow(int row) {
 }
 
 void initialize() {
-    pinMode(CLOCK, OUTPUT);
-    pinMode(ROWDATA, OUTPUT);
-    pinMode(COLLOW, OUTPUT);
-    pinMode(COLHIGH, OUTPUT);
-    pinMode(COL0, OUTPUT);
-    pinMode(COL2, OUTPUT);
-    pinMode(COL4, OUTPUT);
+    pinMode(CLK, OUTPUT);
+    pinMode(DAT, OUTPUT);
+    pinMode(LOBANK, OUTPUT);
+    pinMode(HIBANK, OUTPUT);
+    pinMode(BIT0, OUTPUT);
+    pinMode(BIT1, OUTPUT);
+    pinMode(BIT2, OUTPUT);
 
     currentRow = 0;
     serialEnd = 0;
@@ -49,39 +53,39 @@ void initialize() {
 
 extern "C" int main(void) {
   initialize();
-  elapsedMillis refresh;
-  int* img = img1;
-  int* nimg = img2;
+  elapsedMillis refresh = 0;
+  int* img = (int*)img1;
+  int *nimg = (int*)img2;
   
   Serial.begin(9600);
 
   while(1) {
     for(int col = 0; col < COLS; col++) {
-      digitalWriteFast(ROWDATA, img[row][col] ? HIGH : LOW);
-      digitalWriteFast(CLOCK, HIGH);
-      digitalWriteFast(CLOCK, LOW);
+      digitalWriteFast(DAT, img[currentRow*ROWS + col] ? HIGH : LOW);
+      digitalWriteFast(CLK, HIGH);
+      digitalWriteFast(CLK, LOW);
     }
     setRow(currentRow);
     currentRow++;
     currentRow %= 15;
-    while (refresh < 50) {
-      if Serial.available() {
+    while (refresh < 10) {
+      if (Serial.available()) {
         serialbuffer[serialEnd] = Serial.read();
         serialEnd++;
       }
       if (serialEnd == 2) {
-        if ((serialbuffer[0] != 0xCA) | (serialbuffer[1] !- 0xFE)) {
+        if ((serialbuffer[0] != 0xCA) | (serialbuffer[1] != 0xFE)) {
           serialEnd = 0;
         }
       }
       if (serialEnd > 2) {
         if (serialbuffer[3] == 0x00) { //Blit frame
-          if (img == img1) {
-            img = img2;
-            nimg = img1;
+          if (img == (int*)img1) {
+            img = (int*)img2;
+            nimg = (int*)img1;
           } else {
-            img = img1;
-            nimg = img2;
+            img = (int*)img1;
+            nimg = (int*)img2;
           }
           serialEnd = 0;
           currentRow = 0;
@@ -97,6 +101,6 @@ extern "C" int main(void) {
       }
     } 
     setRow(16);
-    refresh -= 50;
+    refresh -= 10;
   }
 }
