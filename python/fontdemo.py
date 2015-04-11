@@ -51,7 +51,7 @@ def main(args):
 
 def parse(args):
     parser = argparse.ArgumentParser()
-    parser.add_argument("--file", "-f", type=str, default="4x4.json")
+    parser.add_argument("--file", "-f", type=str, default="font/4x4.json")
     parser.add_argument("--letter", "-l", type=str, default=None, nargs="*")
     parser.add_argument("--string", "-s", type=str, default=None, nargs="?")
     return parser.parse_args(args)
