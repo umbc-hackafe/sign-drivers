@@ -69,7 +69,6 @@ class Pong(game.Game):
             self.ball.y += self.ball.yv
         if self.ball.x < 1:
           if ((self.ball.y < self.lpaddle.y) or (self.ball.y > (self.lpaddle.y + 4))):
-            print(self.ball.y, self.lpaddle.y)
             self.ball.y = 7
             self.ball.x = 56
             self.ball.yv = -1
@@ -85,7 +84,6 @@ class Pong(game.Game):
             self.ball.x += self.ball.xv
         if self.ball.x > 110:
           if ((self.ball.y < self.rpaddle.y) or (self.ball.y > (self.rpaddle.y + 4))):
-            print(self.ball.y, self.rpaddle.y)
             self.ball.y = 7
             self.ball.x = 56
             self.ball.yv = -1
