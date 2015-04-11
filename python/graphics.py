@@ -39,12 +39,15 @@ class DisplayBox(Sprite):
         self.width = width
         self.height = height
         self.buffer = [0] * height
-        self.sprites = []
+        self.sprites = set()
         for i in range(height):
             self.buffer[i] = [0] * width
 
     def add(self, sprite):
-        self.sprites.append(sprite)
+        self.sprites.add(sprite)
+
+    def clear_sprites(self):
+        self.sprites.clear()
 
     def clear(self):
         for r in range(self.height):
