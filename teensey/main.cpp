@@ -1,69 +1,102 @@
-#define CLOCK 1
-#define ROWDATA 2
-
-#define col(i) (i - COLLOW)
-#define COLLOW 3
-#define COLHIGH 4
-#define COL4 5
-#define COL2 6
-#define COL0 7
-
 #define ROWS 15
 #define COLS 112
 
-const int output[][] = {
-    {HIGH,  LOW,  LOW,  LOW,  LOW},
-    {HIGH,  LOW,  LOW,  LOW, HIGH},
-    {HIGH,  LOW,  LOW, HIGH,  LOW},
-    {HIGH,  LOW,  LOW, HIGH, HIGH},
-    {HIGH,  LOW, HIGH,  LOW,  LOW},
-    {HIGH,  LOW, HIGH,  LOW, HIGH},
-    {HIGH,  LOW, HIGH, HIGH,  LOW},
-    {HIGH,  LOW, HIGH, HIGH, HIGH},
-    { LOW, HIGH,  LOW,  LOW,  LOW},
-    { LOW, HIGH,  LOW,  LOW, HIGH},
-    { LOW, HIGH,  LOW, HIGH,  LOW},
-    { LOW, HIGH,  LOW, HIGH, HIGH},
-    { LOW, HIGH, HIGH,  LOW,  LOW},
-    { LOW, HIGH, HIGH,  LOW, HIGH},
-    { LOW, HIGH, HIGH, HIGH,  LOW},
-    { LOW, HIGH, HIGH, HIGH, HIGH},
-};
+#define CLK 11
+#define DAT 12
+#define HIBANK 3
+#define LOBANK 4
+#define BIT0 0
+#define BIT1 1
+#define BIT2 2
 
-const int img[ROWS][COLS];
+#define bufferSize 512
 
-int row;
+const int serialbuffer[bufferSize];
+const int img1[ROWS][COLS];
+const int img2[ROWS][COLS];
 
-void setup() {
-    pinModeFast(CLOCK, OUTPUT);
-    pinModeFast(ROWDATA, OUTPUT);
-    pinModeFast(COLLOW, OUTPUT);
-    pinModeFast(COLHIGH, OUTPUT);
-    pinModeFast(COL0, OUTPUT);
-    pinModeFast(COL2, OUTPUT);
-    pinModeFast(COL4, OUTPUT);
+int currentRow;
+int serialEnd;
 
-    row = 0;
+void setRow(int row) {
+  if (row < 8 & row < 16) {
+    digitalWriteFast(HIBANK, LOW);
+    digitalWriteFast(LOBANK, HIGH);
+  } else if (row < 16) {
+    digitalWriteFast(HIBANK, HIGH);
+    digitalWriteFast(LOBANK, LOW);
+  } else {
+    digitalWriteFast(HIBANK, LOW);
+    digitalWriteFast(LOBANK, LOW);
+  }
+  digitalWriteFast(BIT0, row & 1);
+  digitalWriteFast(BIT1, row & 2);
+  digitalWriteFast(BIT2, row & 4);
 }
 
-void loop() {
+void initialize() {
+    pinMode(CLOCK, OUTPUT);
+    pinMode(ROWDATA, OUTPUT);
+    pinMode(COLLOW, OUTPUT);
+    pinMode(COLHIGH, OUTPUT);
+    pinMode(COL0, OUTPUT);
+    pinMode(COL2, OUTPUT);
+    pinMode(COL4, OUTPUT);
+
+    currentRow = 0;
+    serialEnd = 0;
+}
+
+extern "C" int main(void) {
+  initialize();
+  elapsedMillis refresh;
+  int* img = img1;
+  int* nimg = img2;
+  
+  Serial.begin(9600);
+
+  while(1) {
     for(int col = 0; col < COLS; col++) {
-        digitalWriteFast(ROWDATA, img[row][col] ? HIGH : LOW);
-        digitalWriteFast(CLOCK, HIGH);
-        digitalWriteFast(CLOCK, LOW);
+      digitalWriteFast(ROWDATA, img[row][col] ? HIGH : LOW);
+      digitalWriteFast(CLOCK, HIGH);
+      digitalWriteFast(CLOCK, LOW);
     }
-
-    digitalWriteFast(COLLOW, output[row][col(COLLOW)]);
-    digitalWriteFast(COLHIGH, output[row][col(COLHIGH)]);
-    digitalWriteFast(COL0, output[row][col(COL0)]);
-    digitalWriteFast(COL2, output[row][col(COL2)]);
-    digitalWriteFast(COL4, output[row][col(COL4)]);
-
-    delay(100);
-
-    digitalWriteFast(COLLOW, LOW);
-    digitalWriteFast(COLHIGH, LOW);
-    digitalWriteFast(COL0, LOW);
-    digitalWriteFast(COL2, LOW);
-    digitalWriteFast(COL4, LOW);
+    setRow(currentRow);
+    currentRow++;
+    currentRow %= 15;
+    while (refresh < 50) {
+      if Serial.available() {
+        serialbuffer[serialEnd] = Serial.read();
+        serialEnd++;
+      }
+      if (serialEnd == 2) {
+        if ((serialbuffer[0] != 0xCA) | (serialbuffer[1] !- 0xFE)) {
+          serialEnd = 0;
+        }
+      }
+      if (serialEnd > 2) {
+        if (serialbuffer[3] == 0x00) { //Blit frame
+          if (img == img1) {
+            img = img2;
+            nimg = img1;
+          } else {
+            img = img1;
+            nimg = img2;
+          }
+          serialEnd = 0;
+          currentRow = 0;
+        }
+        if ((serialbuffer[3] == 0x01) & (serialEnd == COLS*ROWS+3)) {
+          for (int i=0; i<COLS*ROWS; i++) {
+            nimg[i] = serialbuffer[i+3];
+          }
+        }
+      }
+      if (serialEnd > bufferSize) {
+        serialEnd = 0;
+      }
+    } 
+    setRow(16);
+    refresh -= 50;
+  }
 }
