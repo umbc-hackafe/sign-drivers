@@ -29,9 +29,11 @@ class Countdown(game.Game):
         if tdiff.seconds <= 0:
             if tdiff.seconds % 2 and not self.blink:
                 self.sprites.remove(self.text)
+                self.sprites.add(self.timer)
                 self.blink = True
             elif self.blink:
                 self.sprites.add(self.text)
+                self.sprites.remove(self.timer)
                 self.blink = False
         else:
             h, rem = divmod(tdiff.seconds, 3600)
@@ -40,6 +42,7 @@ class Countdown(game.Game):
             
             self.text.set_text("{:0>1}:{:0>2}:{:0>2}.{:0>3} REMAIN".format(
                 h, m, s, mls))
+        self.timer.width = max(0,int(112 * tdiff.secods / 3600))
 
         super().loop()
 
