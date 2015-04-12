@@ -71,7 +71,7 @@ class HL3(game.Game):
                         self.sprites.add(graphics.Rectangle(1, 1, x=x, y=y))
             self.sprites.add(self.timer)
             self.sprites.add(self.loading)
-            self.time = 100
+            self.time = 10
         self.timer.width = int(math.log(self.time, 3600 * 24 * 36) * self.max_width)
         super().loop()
 
