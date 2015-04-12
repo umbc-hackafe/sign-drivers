@@ -42,7 +42,7 @@ class Countdown(game.Game):
             
             self.text.set_text("{:0>1}:{:0>2}:{:0>2}.{:0>3} REMAIN".format(
                 h, m, s, mls))
-        self.timer.width = max(0,int(112 * tdiff.secods / 3600))
+        self.timer.width = max(0,int(112 * tdiff.seconds / 3600))
 
         super().loop()
 
