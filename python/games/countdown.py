@@ -9,8 +9,8 @@ class Countdown(game.Game):
 
         self.timer = graphics.Rectangle(112, 7, x=0, y=8)
         self.text = graphics.TextSprite("1:00:00.000 REMAIN", x=0, y=0, width=5, height=7)
-        #self.end_time = datetime.datetime(2015, 4, 12, 10, 0, 0)
-        self.end_time = datetime.datetime(2015, 4, 12, 9, 53, 0)
+        self.end_time = datetime.datetime(2015, 4, 12, 10, 0, 0)
+        #self.end_time = datetime.datetime(2015, 4, 12, 9, 53, 0)
 
         self.sprites.add(self.timer)
         self.sprites.add(self.text)
