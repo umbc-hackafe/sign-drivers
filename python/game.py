@@ -6,6 +6,7 @@ import requests
 try:
     import RPi.GPIO as gpio
 except:
+    print("Couldn't load GPIO")
     global gpio
     gpio = lambda: None
     setattr(gpio, 'setup', lambda _, __: None)
@@ -75,6 +76,7 @@ class Game:
             self.loop()
 
     def trigger(self, item, act):
+        print("Triggering {}.{}".format(item, act))
         if item == "alert" and requests:
             requests.get("localhost:5000/{}/a/7".format(act))
         elif item == "buzzer" and gpio:
