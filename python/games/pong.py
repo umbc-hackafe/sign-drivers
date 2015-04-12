@@ -31,6 +31,7 @@ class Pong(game.Game):
         self.end = False
         self.alert = 0
         self.beeping = False
+        self.buzzing = False
 
     def loop(self):
         if self.alert > 0:
@@ -40,6 +41,9 @@ class Pong(game.Game):
 
         if self.beeping:
             self.trigger("beeper", "off")
+
+        if self.buzzing:
+            self.trigger("buzzer", "off")
 
         if self.end:
             time.sleep(3)
@@ -87,6 +91,8 @@ class Pong(game.Game):
             self.ball.xv = 2
             self.rscore += 1
             self.rightScore.set_text(str(self.rscore))
+            self.trigger("buzzer", "on")
+            self.buzzing = True
             if self.rscore == 5:
                 self.sprites = set()
                 self.sprites.add(self.rightVictory)
@@ -106,6 +112,8 @@ class Pong(game.Game):
             self.ball.xv = -2
             self.lscore += 1
             self.leftScore.set_text(str(self.lscore))
+            self.trigger("buzzer", "on")
+            self.buzzing = True
             if self.lscore == 5:
                 self.sprites = set()
                 self.sprites.add(self.leftVictory)
