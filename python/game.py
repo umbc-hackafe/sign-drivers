@@ -79,7 +79,10 @@ class Game:
         print("Triggering {}.{}".format(item, act))
         if item == "alert" and requests:
             requests.get("localhost:5000/{}/a/7".format(act))
+            print("alert " + act)
         elif item == "buzzer" and gpio:
             gpio.output(BUZZER, 1 if act == "on" else 0)
+            print("buzzer " + act)
         elif item == "beeper" and gpio:
             gpio.output(BEEPER, 1 if act == "on" else 0)
+            print("beeper " + act)
