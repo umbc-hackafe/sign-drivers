@@ -29,8 +29,13 @@ class Pong(game.Game):
         self.rightVictory = graphics.TextSprite("RIGHT WINS!", x=13, y=4, width=5, height=7)
         self.sprites.add(self.ball)
         self.end = False
+        self.alert = 0
 
     def loop(self):
+        if self.alert > 0:
+            self.alert -= 1
+        elif self.alert == 0:
+            self.trigger("alert", "off")
         if self.end:
             time.sleep(3)
             self.sprites = set()
@@ -79,6 +84,8 @@ class Pong(game.Game):
                 self.sprites = set()
                 self.sprites.add(self.rightVictory)
                 self.end = True
+                self.alert = 10
+                self.trigger("alert", "on")
           else:
             self.ball.xv = -1*self.ball.xv
             self.ball.x += self.ball.xv
@@ -94,6 +101,8 @@ class Pong(game.Game):
                 self.sprites = set()
                 self.sprites.add(self.leftVictory)
                 self.end = True
+                self.alert = 10
+                self.trigger("alert", "on")
           else:
             self.ball.xv = -1*self.ball.xv
             self.ball.x += self.ball.xv
