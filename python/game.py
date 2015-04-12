@@ -3,8 +3,19 @@ import time
 import queue
 import sys
 
+BUZZER = 15
+BEEPER = 13
+
+try:
+    import requests
+    import RPi.GPIO as gpio
+    gpio.setmode(gpio.BOARD)
+    gpio.setup(BUZZER, gpio.OUT)
+    gpio.setup(BEEPER, gpio.OUT)
+except:
+    pass
+
 class Game:
-    
     def __init__(self, graphics, serial, stdscr, play, framerate=30):
         self.play = play
         self.stdscr = stdscr
@@ -54,3 +65,11 @@ class Game:
         while self.running:
             self.handle_events()
             self.loop()
+
+    def trigger(self, item, act):
+        if kind == "alert" and requests:
+            requests.get("localhost:5000/{}/a/7".format(act))
+        elif kind == "buzzer" and gpio:
+            gpio.output(BUZZER, 1 if act == "on" else 0)
+        elif kind == "beeper" and gpio:
+            gpio.output(BEEPER, 1 if act == "on" else 0)
