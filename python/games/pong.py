@@ -34,8 +34,9 @@ class Pong(game.Game):
     def loop(self):
         if self.alert > 0:
             self.alert -= 1
-        elif self.alert == 0:
-            self.trigger("alert", "off")
+            if self.alert == 0:
+                self.trigger("alert", "off")
+
         if self.end:
             time.sleep(3)
             self.sprites = set()
