@@ -64,8 +64,9 @@ class FlappyPixel(game.Game):
                 self.flappy.y += 1
 
             if self.flappy.y > 15 or self.flappy.y < 0 or self.check_collision():
-                self.sprites = set([graphics.TextSprite("GAME OVER", width=5, height=7),
-                                    graphics.TextSprite("R TO RELOAD", width=5, height=7, y=8)])
+                self.sprites = set([graphics.TextSprite("GAME OVER: SCORE %d" %
+                    self.score, width=5, height=7),
+                                graphics.TextSprite("R TO RELOAD", width=5, height=7, y=8)])
                 self.playing = False
                 return
 
