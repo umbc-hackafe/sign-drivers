@@ -68,6 +68,9 @@ class Game:
 
     def stop(self):
         self.running = False
+        self.trigger("alert", "off")
+        self.trigger("buzzer", "off")
+        self.trigger("beeper", "off")
 
     def run(self):
         self.running = True
