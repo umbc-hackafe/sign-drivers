@@ -26,15 +26,18 @@ class Countdown(game.Game):
             self.light = True
             self.trigger("alert", "on")
 
-        if tdiff.seconds <= 0:
-            if tdiff.seconds % 2 and not self.blink:
-                self.sprites.remove(self.text)
-                self.trigger("beeper", "on")
-                self.blink = True
-            elif self.blink:
-                self.sprites.add(self.text)
-                self.blink = False
-                self.trigger("beeper", "on")
+        if tdiff.seconds <= 30:
+            try:
+                if tdiff.seconds % 2 and not self.blink:
+                    self.sprites.remove(self.text)
+                    self.trigger("beeper", "on")
+                    self.blink = True
+                elif self.blink:
+                    self.sprites.add(self.text)
+                    self.blink = False
+                    self.trigger("beeper", "on")
+            except:
+                pass
         else:
             h, rem = divmod(tdiff.seconds, 3600)
             m, s = divmod(rem, 60)
