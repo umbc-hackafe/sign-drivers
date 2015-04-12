@@ -21,6 +21,7 @@ class Menu(game.Game):
             'hl3',
             'photobikes',
             'breakout',
+            'navi',
         ]
 
         self.game_names = dict(zip(self.games, [
@@ -36,6 +37,7 @@ class Menu(game.Game):
             'HALF-LIFE 3',
             'PHOTO BIKES',
             'BREAKOUT',
+            'NAVI SIMULATOR',
         ]))
 
         self.label = graphics.TextSprite('{} {}'.format(self.i + 1, self.game_names[self.games[self.i]]), width=5, height=7, x=5, y=4)
