@@ -77,7 +77,7 @@ class Game:
 
     def trigger(self, item, act):
         if item == "alert" and requests:
-            requests.get("localhost:5000/{}/a/7".format(act))
+            requests.get("http://localhost:5000/{}/a/7".format(act))
         elif item == "buzzer" and gpio:
             gpio.output(BUZZER, 1 if act == "on" else 0)
         elif item == "beeper" and gpio:
