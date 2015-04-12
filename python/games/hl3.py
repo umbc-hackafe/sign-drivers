@@ -55,8 +55,7 @@ class HL3(game.Game):
 
     def loop(self):
         self.time += 1
-        print(self.time)
-        if self.time > 1000:
+        if self.time > 500:
             if not self.glitch:
                 self.sprites = set()
                 for y in range(len(CAKE)):
@@ -64,7 +63,7 @@ class HL3(game.Game):
                         if CAKE[y][x]:
                             self.sprites.add(graphics.Rectangle(1, 1, x=x, y=y)) 
                 self.glitch = True
-        if self.time > 1030:
+        if self.time > 525:
             self.sprites = set()
             for y in range(len(HL3_LOGO)):
                 for x in range(len(HL3_LOGO[y])):
@@ -72,6 +71,7 @@ class HL3(game.Game):
                         self.sprites.add(graphics.Rectangle(1, 1, x=x, y=y))
             self.sprites.add(self.timer)
             self.sprites.add(self.loading)
+            self.time = 100
         self.timer.width = int(math.log(self.time, 3600 * 24 * 36) * self.max_width)
         super().loop()
 
