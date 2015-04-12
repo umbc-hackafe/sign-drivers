@@ -45,7 +45,7 @@ class Nort(game.Game):
             elif 'o' in self.keys and not self.direction_b[1]:
                 self.direction_b = (0, -1)
 
-            self.count = (self.count + 1) % 8
+            self.count = (self.count + 1) % 2
 
             if not self.count:
                 poses = set((s.x, s.y) for s in self.snake_a[1:] + self.snake_b[1:])
