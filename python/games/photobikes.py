@@ -26,6 +26,7 @@ class Nort(game.Game):
         self.count = 0
 
     def loop(self):
+        self.trigger("buzzer", "off")
         if self.playing:
             if 'a' in self.keys and not self.direction_a[0]:
                 self.direction_a = (-1, 0)
@@ -60,6 +61,7 @@ class Nort(game.Game):
                         or snake[0].y < 0 or snake[0].y >= 15
                         or (snake[0].x, snake[0].y) in poses) \
                         or (self.snake_a[0].x, self.snake_a[0].y) == (self.snake_b[0].x, self.snake_b[0].y):
+                        self.trigger("buzzer", "on")
                         self.sprites.clear()
 
                         if (self.snake_a[0].x, self.snake_a[0].y) == (self.snake_b[0].x, self.snake_b[0].y):
