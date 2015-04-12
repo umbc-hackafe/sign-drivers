@@ -30,12 +30,16 @@ class Pong(game.Game):
         self.sprites.add(self.ball)
         self.end = False
         self.alert = 0
+        self.beeping = False
 
     def loop(self):
         if self.alert > 0:
             self.alert -= 1
             if self.alert == 0:
                 self.trigger("alert", "off")
+
+        if self.beeping:
+            self.trigger("beeper", "off")
 
         if self.end:
             time.sleep(3)
@@ -73,6 +77,8 @@ class Pong(game.Game):
         if (self.ball.y < (self.ball.radius)) or (self.ball.y > (15-self.ball.radius)):
             self.ball.yv = -1*self.ball.yv
             self.ball.y += self.ball.yv
+            self.trigger("beeper", "on")
+            self.beeping = True
         if self.ball.x < 1:
           if ((self.ball.y < self.lpaddle.y) or (self.ball.y > (self.lpaddle.y + 4))):
             self.ball.y = 7
@@ -87,6 +93,8 @@ class Pong(game.Game):
                 self.end = True
                 self.alert = 10
                 self.trigger("alert", "on")
+            self.trigger("beeper", "on")
+            self.beeping = True
           else:
             self.ball.xv = -1*self.ball.xv
             self.ball.x += self.ball.xv
@@ -107,6 +115,8 @@ class Pong(game.Game):
           else:
             self.ball.xv = -1*self.ball.xv
             self.ball.x += self.ball.xv
+            self.trigger("beeper", "on")
+            self.beeping = True
         
         self.ball.x += self.ball.xv
         self.ball.y += self.ball.yv
