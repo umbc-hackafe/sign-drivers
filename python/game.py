@@ -86,3 +86,5 @@ class Game:
         elif item == "beeper" and gpio:
             gpio.output(BEEPER, 1 if act == "on" else 0)
             print("beeper " + act)
+        else:
+            print("NOPE NOPE NOPE: {} {}".format(item, act))
