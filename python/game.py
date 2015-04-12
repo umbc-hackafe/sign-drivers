@@ -2,18 +2,26 @@ import curses
 import time
 import queue
 import sys
+import requests
+try:
+    import RPi.GPIO as gpio
+except:
+    global gpio
+    gpio = lambda: None
+    setattr(gpio, 'setup', lambda _, __: None)
+    setattr(gpio, 'setwarnings', lambda _: None)
+    setattr(gpio, 'setmode', lambda _: None)
+    setattr(gpio, 'output', lambda _, __: None)
+    setattr(gpio, 'BOARD', None)
+    setattr(gpio, 'OUT', None)
 
 BUZZER = 15
 BEEPER = 13
 
-try:
-    import requests
-    import RPi.GPIO as gpio
-    gpio.setmode(gpio.BOARD)
-    gpio.setup(BUZZER, gpio.OUT)
-    gpio.setup(BEEPER, gpio.OUT)
-except:
-    pass
+gpio.setwarnings(False);
+gpio.setmode(gpio.BOARD)
+gpio.setup(BUZZER, gpio.OUT)
+gpio.setup(BEEPER, gpio.OUT)
 
 class Game:
     def __init__(self, graphics, serial, stdscr, play, framerate=30):
