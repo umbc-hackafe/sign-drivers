@@ -87,17 +87,17 @@ class Pong(game.Game):
             self.ball.xv = 2
             self.rscore += 1
             self.rightScore.set_text(str(self.rscore))
-            if self.rscore == 10:
+            if self.rscore == 5:
                 self.sprites = set()
                 self.sprites.add(self.rightVictory)
                 self.end = True
                 self.alert = 10
                 self.trigger("alert", "on")
-            self.trigger("beeper", "on")
-            self.beeping = True
           else:
             self.ball.xv = -1*self.ball.xv
             self.ball.x += self.ball.xv
+            self.trigger("beeper", "on")
+            self.beeping = True
         if self.ball.x > 110:
           if ((self.ball.y < self.rpaddle.y) or (self.ball.y > (self.rpaddle.y + 4))):
             self.ball.y = 7
@@ -106,7 +106,7 @@ class Pong(game.Game):
             self.ball.xv = -2
             self.lscore += 1
             self.leftScore.set_text(str(self.lscore))
-            if self.lscore == 10:
+            if self.lscore == 5:
                 self.sprites = set()
                 self.sprites.add(self.leftVictory)
                 self.end = True
@@ -117,7 +117,7 @@ class Pong(game.Game):
             self.ball.x += self.ball.xv
             self.trigger("beeper", "on")
             self.beeping = True
-        
+
         self.ball.x += self.ball.xv
         self.ball.y += self.ball.yv
         super().loop()
