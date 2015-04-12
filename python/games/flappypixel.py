@@ -75,8 +75,11 @@ class FlappyPixel(game.Game):
 
             if not self.ticks % 45:
                 self.sprites.add(next(self.terrain))
-                self.score += 1
-                self.scoretext.set_text(str(self.score))
+                # Only add to the score if you're in the process of passing
+                # terrain.
+                if self.ticks > 45 * 5:
+                    self.score += 1
+                    self.scoretext.set_text(str(self.score))
 
 
             self.ticks += 1
