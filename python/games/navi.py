@@ -28,8 +28,7 @@ class Navi(game.Game):
             time.sleep(3)
             
         if self.push:
-            time.sleep(6)
-            print(self.sprites)
+            time.sleep(4)
             self.sprites.remove(self.listen)
             self.push = False
 
