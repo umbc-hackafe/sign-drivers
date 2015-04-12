@@ -16,6 +16,7 @@ t = twython.Twython(app_key=TWITTER_APP_KEY,
 
 class Twitter(game.Game):
   def __init__(self, *args, **kwargs):
+    kwargs['framerate'] = 120
     super().__init__(*args, **kwargs)
     self.nl = iter([])
     
