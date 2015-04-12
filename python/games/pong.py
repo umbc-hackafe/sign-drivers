@@ -93,14 +93,14 @@ class Pong(game.Game):
             self.ball.xv = 2
             self.rscore += 1
             self.rightScore.set_text(str(self.rscore))
-            self.trigger("buzzer", "on")
-            self.buzz = 6
             if self.rscore == 5:
                 self.sprites = set()
                 self.sprites.add(self.rightVictory)
                 self.end = True
                 self.alert = 10
                 self.trigger("alert", "on")
+            self.trigger("buzzer", "on")
+            self.buzz = 6
           else:
             self.ball.xv = -1*self.ball.xv
             self.ball.x += self.ball.xv
@@ -114,14 +114,14 @@ class Pong(game.Game):
             self.ball.xv = -2
             self.lscore += 1
             self.leftScore.set_text(str(self.lscore))
-            self.trigger("buzzer", "on")
-            self.buzz = 6
             if self.lscore == 5:
                 self.sprites = set()
                 self.sprites.add(self.leftVictory)
                 self.end = True
                 self.alert = 10
                 self.trigger("alert", "on")
+            self.trigger("buzzer", "on")
+            self.buzz = 6
           else:
             self.ball.xv = -1*self.ball.xv
             self.ball.x += self.ball.xv
