@@ -25,6 +25,7 @@ class Nort(game.Game):
 
         self.count = 0
         self.buzzer = 0
+        self.beeping = False
 
     def loop(self):
         if self.buzzer > 0:
@@ -32,24 +33,44 @@ class Nort(game.Game):
         elif self.buzzer == 0:
             self.trigger("buzzer", "off")
 
+        if self.beeping:
+            self.trigger("beeper", "off")
+            self.beeping = False
+
         if self.playing:
             if 'a' in self.keys and not self.direction_a[0]:
                 self.direction_a = (-1, 0)
+                self.beeping = True
+                self.trigger("beeper", "on")
             elif 'd' in self.keys and not self.direction_a[0]:
                 self.direction_a = (1, 0)
+                self.beeping = True
+                self.trigger("beeper", "on")
             if 's' in self.keys and not self.direction_a[1]:
                 self.direction_a = (0, 1)
+                self.beeping = True
+                self.trigger("beeper", "on")
             elif 'w' in self.keys and not self.direction_a[1]:
                 self.direction_a = (0, -1)
+                self.beeping = True
+                self.trigger("beeper", "on")
 
             if 'k' in self.keys and not self.direction_b[0]:
                 self.direction_b = (-1, 0)
+                self.beeping = True
+                self.trigger("beeper", "on")
             elif ';' in self.keys and not self.direction_b[0]:
                 self.direction_b = (1, 0)
+                self.beeping = True
+                self.trigger("beeper", "on")
             if 'l' in self.keys and not self.direction_b[1]:
                 self.direction_b = (0, 1)
+                self.beeping = True
+                self.trigger("beeper", "on")
             elif 'o' in self.keys and not self.direction_b[1]:
                 self.direction_b = (0, -1)
+                self.beeping = True
+                self.trigger("beeper", "on")
 
             self.count = 0
 
