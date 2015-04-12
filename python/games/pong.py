@@ -94,7 +94,7 @@ class Pong(game.Game):
             self.rscore += 1
             self.rightScore.set_text(str(self.rscore))
             self.trigger("buzzer", "on")
-            self.buzz = 3
+            self.buzz = 6
             if self.rscore == 5:
                 self.sprites = set()
                 self.sprites.add(self.rightVictory)
@@ -115,7 +115,7 @@ class Pong(game.Game):
             self.lscore += 1
             self.leftScore.set_text(str(self.lscore))
             self.trigger("buzzer", "on")
-            self.buzz = 3
+            self.buzz = 6
             if self.lscore == 5:
                 self.sprites = set()
                 self.sprites.add(self.leftVictory)
