@@ -80,7 +80,6 @@ class Game:
 
     def trigger(self, item, act):
         if item == "alert" and requests:
-            print("AAAA")
             try:
                 requests.get("http://localhost:5000/{}/a/7".format(act))
             except:
