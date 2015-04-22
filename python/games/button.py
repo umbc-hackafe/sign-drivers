@@ -6,6 +6,7 @@ import requests
 import driver
 import game
 import json
+from time import time as now
 import sys
 import re
 
@@ -22,6 +23,7 @@ class Button(game.Game):
         self.text_top = graphics.TextSprite("60", x=0, y=0, width=5, height=7)
         self.text_bottom = graphics.TextSprite("00", x=0, y=8, width=5, height=7)
         self.text_participants = graphics.TextSprite("???,???", x=16, y=8, width=5, height=7)
+        self.at = now()
         self.time = 60.00
         self.total_width = 112-12
 
@@ -44,12 +46,14 @@ class Button(game.Game):
 
     def reset_time(self, time=60.00):
         self.time = time
+        self.at = now()
 
     def reset_participants(self, participants="???,???"):
         self.text_participants.set_text(participants)
 
     def loop(self):
-        self.time -= 1 / self.framerate
+        self.time -= (now() - self.at)
+        self.at = now()
         self.text_top.set_text(str(int(self.time)))
         self.text_bottom.set_text(str(int(self.time % 1 * 100)))
         self.timer.width = int(self.total_width * self.time / 60)
