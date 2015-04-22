@@ -12,6 +12,7 @@ import re
 def on_message(game, ws, message):
     a = json.loads(message)
     game.reset_time(a["payload"]["seconds_left"])
+    game.reset_participants(a["payload"]["participants_text"])
 
 class Button(game.Game):
     def __init__(self, *args, **kwargs):
@@ -20,13 +21,14 @@ class Button(game.Game):
         self.timer = graphics.Rectangle(112-12, 7, x=12, y=0)
         self.text_top = graphics.TextSprite("60", x=0, y=0, width=5, height=7)
         self.text_bottom = graphics.TextSprite("00", x=0, y=8, width=5, height=7)
+        self.text_participants = graphics.TextSprite("???,???", x=16, y=8, width=5, height=7)
         self.time = 60.00
         self.total_width = 112-12
 
         self.sprites.add(self.timer)
         self.sprites.add(self.text_top)
         self.sprites.add(self.text_bottom)
-        self.sprites.add(graphics.TextSprite("/r/thebutton", x=16, y=8, width=5, height=7))
+        self.sprites.add(self.text_participants)
 
 
         regex = re.compile(r"(wss://wss\.redditmedia\.com/thebutton\?h=[^\"]*)")
@@ -42,6 +44,9 @@ class Button(game.Game):
 
     def reset_time(self, time=60.00):
         self.time = time
+
+    def reset_participants(self, participants="???,???"):
+        self.text_participants.set_text(participants)
 
     def loop(self):
         self.time -= 1 / self.framerate
