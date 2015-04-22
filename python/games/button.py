@@ -74,7 +74,7 @@ class Button(game.Game):
             bar = graphics.Rectangle(1, color(self.last_time), x=112-6*len(self.text_participants.text)-2, y=15-color(self.last_time))
             for s in list(self.bars):
                 s.x -= 1
-                if s.x <= 13:
+                if s.x < 13:
                     self.bars.remove(s)
                     self.sprites.remove(s)
             self.bars.append(bar)
