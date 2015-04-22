@@ -52,6 +52,8 @@ class Button(game.Game):
         self.sprites.add(self.text_bottom)
         self.sprites.add(self.text_participants)
 
+        self.beeping = False
+        self.buzzing = False
 
         regex = re.compile(r"(wss://wss\.redditmedia\.com/thebutton\?h=[^\"]*)")
         url = requests.get("https://www.reddit.com/r/thebutton")
@@ -70,7 +72,16 @@ class Button(game.Game):
         self.time = time
         self.at = now()
 
+        if self.real_time <= 10 and not self.buzzing:
+            self.buzzing = True
+            self.trigger("buzzer", "on")
+        elif self.real_time > 10 and self.buzzing:
+            self.buzzing = False
+            self.trigger("buzzer", "off")
+
         if self.real_time >= self.last_time:
+            self.beeping = True
+            self.trigger("beeper", "on")
             bar = graphics.Rectangle(1, color(self.last_time), x=112-6*len(self.text_participants.text)-2, y=15-color(self.last_time))
             for s in list(self.bars):
                 s.x -= 1
@@ -85,6 +96,9 @@ class Button(game.Game):
         self.text_participants.x = 112 - 6 * len(participants)
 
     def loop(self):
+        if self.beeping:
+            self.trigger("beeper", "off")
+            self.beeping = False
         self.time = max(self.time - (now() - self.at), 0)
         self.at = now()
         self.text_top.set_text("{:02}".format(int(self.time)))
