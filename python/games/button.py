@@ -82,7 +82,7 @@ class Button(game.Game):
         if self.real_time >= self.last_time:
             self.beeping = True
             self.trigger("beeper", "on")
-            bar = graphics.Rectangle(1, color(self.last_time), x=112-6*len(self.text_participants.text)-2, y=15-color(self.last_time))
+            bar = graphics.Rectangle(1, color(self.last_time), x=112-6*len(self.text_participants.text)-2, y=14-color(self.last_time))
             for s in list(self.bars):
                 s.x -= 1
                 if s.x < 13:
