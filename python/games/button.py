@@ -50,6 +50,7 @@ class Button(game.Game):
 
     def reset_participants(self, participants="???,???"):
         self.text_participants.set_text(participants)
+        self.text_participants.x = 112 - 6 * (len(participants) + 1)
 
     def loop(self):
         self.time -= (now() - self.at)
