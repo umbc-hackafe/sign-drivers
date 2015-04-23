@@ -60,7 +60,7 @@ class Game:
         
     def loop(self):
         self.graphics.clear()
-        for sprite in self.sprites:
+        for sprite in set(self.sprites):
             sprite.draw(self.graphics)
 
         self.graphics.draw(self.serial)
