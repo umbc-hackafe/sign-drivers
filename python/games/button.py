@@ -13,7 +13,7 @@ import re
 def on_message(game, ws, message):
     a = json.loads(message)
     game.reset_time(a["payload"]["seconds_left"])
-    game.reset_participants(a["payload"]["participants_text"])
+    game.reset_participants(a["payload"]["participants_text"].replace(',',''))
 
 def color(secs):
     if secs <= 11:
