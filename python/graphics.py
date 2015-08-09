@@ -30,7 +30,7 @@ class Sprite(object):
     def __init__(self, x=0, y=0):
         self.x = x
         self.y = y
-    
+
     def draw(self, display):
         pass
 
@@ -150,7 +150,7 @@ class TextSprite(Sprite):
     def set_text(self, text):
         self.text = text.upper()
         self.sprites = [CharacterSprite(c, y=self.y, width=self.width, height=self.height) for c in self.text]
-        
+
 
     def draw(self, display):
         for i, x in enumerate(range(
