@@ -7,7 +7,7 @@ class Menu(game.Game):
         super().__init__(*args, **kwargs)
 
         self.i = 0
-        
+
         self.games = [
             'life',
             'twitter',
@@ -23,6 +23,7 @@ class Menu(game.Game):
             'breakout',
             'navi',
             'countdown',
+            'lug',
         ]
 
         self.game_names = dict(zip(self.games, [
@@ -40,6 +41,7 @@ class Menu(game.Game):
             'BREAKOUT',
             'NAVI SIMULATOR',
             'FINAL COUNTDOWN',
+            'LUG',
         ]))
 
         self.label = graphics.TextSprite('{} {}'.format(self.i + 1, self.game_names[self.games[self.i]]), width=5, height=7, x=5, y=4)
@@ -55,7 +57,7 @@ class Menu(game.Game):
 
         if '\n' in self.keys:
             self.play.exec_game(self.games[self.i])
-            
+
         super().loop()
 
 GAME = Menu
