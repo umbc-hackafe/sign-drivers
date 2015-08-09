@@ -11,25 +11,20 @@ class Lug(game.Game):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.modes = [
+        modes = [
             self.normal_mode,
             self.blink_mode,
             self.bounce_mode,
         ]
 
         self.cycle = itertools.chain.from_iterable(
-            map(lambda x: random.shuffle(x) or x, itertools.repeat(self.modes)))
-
-        self.current = next(self.cycle)()
+            mode() for mode in itertools.chain.from_iterable(
+                random.shuffle(x) or x for x in itertools.repeat(modes)))
 
     def loop(self):
         super().loop()
 
-        try:
-            next(self.current)
-        except StopIteration:
-            self.current = next(self.cycle)()
-
+        next(self.cycle)
 
     def normal_mode(self):
         label = graphics.TextSprite('LINUX USERS GROUP', width=5, height=7, x=5, y=4)
@@ -84,7 +79,7 @@ class Lug(game.Game):
                 vx = -vx
             if label.y == 0 and vy < 0:
                 vy = -vy
-            if label.x + (label.width + 1) * len(label.sprites) == 112 and vx > 0:
+            if label.x + (label.width + 1) * len(label.sprites) == 113 and vx > 0:
                 vx = -vx
             if label.y + label.height == 15 and vy > 0:
                 vy = -vy
