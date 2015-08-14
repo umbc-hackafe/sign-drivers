@@ -137,6 +137,8 @@ class MessageBoard(game.Game):
                 self.sprites.remove(effect)
             self.sprites.remove(message.label)
 
+        self.graphics.clear()
+
         with self.frame_lock:
             self.messages = {k: m for k, m in self.messages.items() if m.expiration > time.time()}
 
