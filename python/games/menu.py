@@ -24,6 +24,7 @@ class Menu(game.Game):
             'navi',
             'countdown',
             'lug',
+            'board',
         ]
 
         self.game_names = dict(zip(self.games, [
@@ -42,6 +43,7 @@ class Menu(game.Game):
             'NAVI SIMULATOR',
             'FINAL COUNTDOWN',
             'LUG',
+            'MESSAGE BOARD',
         ]))
 
         self.label = graphics.TextSprite('{} {}'.format(self.i + 1, self.game_names[self.games[self.i]]), width=5, height=7, x=5, y=4)
