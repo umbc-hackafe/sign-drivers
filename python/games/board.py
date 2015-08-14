@@ -95,7 +95,7 @@ class MessageBoard(game.Game):
     def add_message(self):
         text = request.form.get("text", "?")
         priority = int(request.form.get("priority", 5))
-        expiration = request.form.get("expiration", None)
+        expiration = int(request.form.get("expiration", 0))
         effects = filter(bool, request.form.get("effects", "").split(","))
         name = request.form.get("name", None)
 
