@@ -59,12 +59,13 @@ class Game:
             pass
         
     def loop(self):
+        next_frame = time.time() + 1 / self.framerate
         self.graphics.clear()
         for sprite in set(self.sprites):
             sprite.draw(self.graphics)
 
         self.graphics.draw(self.serial)
-        time.sleep(1 / self.framerate)
+        time.sleep(max(.01, next_frame - time.time()))
 
     def stop(self):
         self.running = False
