@@ -162,6 +162,47 @@ class TextSprite(Sprite):
         for sprite in self.sprites:
             sprite.draw(display)
 
+class Animator(Sprite):
+    def __init__(self, targets, attr="x", max=112, min=0,
+                 step=1, ticks=30, pause=0, loop=False, reverse=False):
+        self.targets = [targets] if isinstance(targets, Sprite) else targets
+        self.tick_rate = ticks
+        self.step = step
+        self.ticks = 0
+        self.pause = pause
+        self.attr = attr
+        self.min = min
+        self.max = max
+        self.loop = loop
+        self.reverse = reverse
+
+    def draw(self, display):
+        for s in self.targets:
+            self.ticks += 1
+            if self.ticks >= 0 and self.tick_rate == 0 or not self.ticks % self.tick_rate:
+                setattr(s, self.attr, getattr(s, self.attr) + self.step)
+
+                if getattr(s, self.attr) > self.max:
+                    if self.loop:
+                        # simulate it wrapping around to the next location
+                        setattr(s, self.attr, self.min + (getattr(s, self.attr) - self.max))
+                    elif self.reverse:
+                        # simulate it hitting the end and bouncing back
+                        self.step = -self.step
+                        setattr(s, self.attr, self.max - (getattr(s, self.attr) - self.max))
+                    if self.pause:
+                        self.ticks = -self.pause
+
+                elif getattr(s, self.attr) < self.min:
+                    if self.loop:
+                        setattr(s, self.attr, self.max - (self.min - getattr(s, self.attr)))
+                    elif self.reverse:
+                        self.step = -self.step
+                        setattr(s, self.attr, self.min + (self.min - getattr(s, self.attr)))
+
+                    if self.pause:
+                        self.ticks = -self.pause
+
 if __name__ == '__main__':
     disp = Display()
     circ = Circle(4, 15/2+1, 15/2)
