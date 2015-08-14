@@ -30,6 +30,7 @@ class Sprite(object):
     def __init__(self, x=0, y=0):
         self.x = x
         self.y = y
+        self.visible = 1
 
     def draw(self, display):
         pass
@@ -56,6 +57,9 @@ class DisplayBox(Sprite):
                 self.buffer[r][c] = 0
 
     def draw(self, display):
+        if not self.visible:
+            return
+
         self.clear()
         for sprite in self.sprites:
             sprite.draw(self)
@@ -80,6 +84,9 @@ class Rectangle(Sprite):
         self.wrapy = wrapy
 
     def draw(self, display):
+        if not self.visible:
+            return
+
         for r in range(round(self.y), round(self.y + self.height)):
             for c in range(round(self.x), round(self.x + self.width)):
                 if (0 <= r < display.height or self.wrapy) and (0 <= c < display.width or self.wrapx):
@@ -91,6 +98,9 @@ class Circle(Sprite):
         self.radius = radius
 
     def draw(self, display):
+        if not self.visible:
+            return
+
         for r in range(
                 max(int(self.y - self.radius + 0.5), 0),
                 min(int(self.y + self.radius + 0.5) + 1, display.height)):
@@ -130,6 +140,9 @@ class CharacterSprite(Sprite):
         self.fontspec = type(self).fontspecs[dimensionstr]
 
     def draw(self, display):
+        if not self.visible:
+            return
+
         # Get the letter, or a block if not available
         # XXX: document the uppercase more explicitly
         tfmatrix = self.fontspec.get(self.letter.upper(),
@@ -153,6 +166,9 @@ class TextSprite(Sprite):
 
 
     def draw(self, display):
+        if not self.visible:
+            return
+
         for i, x in enumerate(range(
                 int(self.x),
                 int(self.x + (self.width + 1) * len(self.sprites)), self.width + 1)):
