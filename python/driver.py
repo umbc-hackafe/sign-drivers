@@ -25,3 +25,9 @@ class DummyDriver:
         self.stdscr.addstr(16, 0, "+" + "-" * 112 + "+")
         self.stdscr.refresh()
 
+class NullDriver:
+    def __init__(self):
+        pass
+
+    def draw(self, fb):
+        pass

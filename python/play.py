@@ -44,6 +44,8 @@ class Play(object):
     def run(self, args):
         if args.dummy:
             self.serial = driver.DummyDriver(self.stdscr)
+        elif args.null:
+            self.serial = driver.NullDriver()
         else:
             self.serial = driver.SerialDriver(args.serial_port)
 
@@ -71,6 +73,7 @@ def main(stdscr, argv):
     parser.add_argument("--stdin", "-i", help="Read input from stdin", action="store_true")
     parser.add_argument("--game", "-g", help="The game to play", choices=play.games.keys(), default='menu')
     parser.add_argument("--dummy", "-d", help="Use a dummy terminal output", action="store_true")
+    parser.add_argument("--null", "-n", help="Use a null output", action="store_true")
 
     args = parser.parse_args(argv)
 
