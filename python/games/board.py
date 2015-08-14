@@ -80,12 +80,12 @@ class MessageBoard(game.Game):
 
             self.sprites.add(label)
 
-            next_animate = time.time() + .25
+            next_animate = time.time() + .05
             while label.x + len(label.text) * (label.width + 1) > 112:
                 while time.time() < next_animate:
                     yield
-                label.x -= 5
-                next_animate = time.time() + .25
+                label.x -= 1
+                next_animate = time.time() + .05
 
             run_until = time.time() + message.priority
 
