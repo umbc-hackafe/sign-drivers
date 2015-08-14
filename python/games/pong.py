@@ -1,4 +1,3 @@
-from scipy.signal import convolve2d
 import graphics
 import random
 import driver
