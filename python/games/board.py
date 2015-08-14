@@ -53,7 +53,7 @@ class MessageBoard(game.Game):
 
     def add_message(self):
         text = request.form.get("text", "?")
-        priority = request.form.get("priority", 5)
+        priority = int(request.form.get("priority", 5))
         expiration = request.form.get("expiration", None)
 
         with self.frame_lock:
