@@ -3,6 +3,7 @@ import itertools
 import math
 import os.path
 import json
+import time
 
 class Display(object):
     def __init__(self, width=112, height=15):
