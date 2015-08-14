@@ -164,22 +164,22 @@ class TextSprite(Sprite):
 
 class Animator(Sprite):
     def __init__(self, targets, attr="x", max=112, min=0,
-                 step=1, ticks=30, pause=0, loop=False, reverse=False):
+                 step=1, delay=1, pause=0, loop=False, reverse=False):
         self.targets = [targets] if isinstance(targets, Sprite) else targets
-        self.tick_rate = ticks
         self.step = step
-        self.ticks = 0
         self.pause = pause
         self.attr = attr
         self.min = min
         self.max = max
         self.loop = loop
         self.reverse = reverse
+        self.delay = delay
+        self.next_animate = time.time() + delay
 
     def draw(self, display):
         for s in self.targets:
-            self.ticks += 1
-            if self.ticks >= 0 and self.tick_rate == 0 or not self.ticks % self.tick_rate:
+            if time.time() >= self.next_animate:
+                self.next_animate = time.time() + self.delay
                 setattr(s, self.attr, getattr(s, self.attr) + self.step)
 
                 if getattr(s, self.attr) > self.max:
@@ -191,7 +191,7 @@ class Animator(Sprite):
                         self.step = -self.step
                         setattr(s, self.attr, self.max - (getattr(s, self.attr) - self.max))
                     if self.pause:
-                        self.ticks = -self.pause
+                        self.next_animate += self.pause
 
                 elif getattr(s, self.attr) < self.min:
                     if self.loop:
@@ -201,7 +201,8 @@ class Animator(Sprite):
                         setattr(s, self.attr, self.min + (self.min - getattr(s, self.attr)))
 
                     if self.pause:
-                        self.ticks = -self.pause
+                        self.next_animate += self.pause
+
 
 if __name__ == '__main__':
     disp = Display()
