@@ -19,7 +19,7 @@ class Message:
         self.label.x = (112 - self.label.size()) // 2
 
         self.priority = priority
-        self.expiration = expiration or datetime.datetime.max.timestamp()
+        self.expiration = expiration or 2147483647
         self.effects = []
 
         for effect_type in effects:
