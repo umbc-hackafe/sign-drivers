@@ -165,6 +165,8 @@ class TextSprite(Sprite):
         self.text = text.upper()
         self.sprites = [CharacterSprite(c, y=self.y, width=self.width, height=self.height) for c in self.text]
 
+    def size(self):
+        return (self.width + 1) * len(self.sprites)
 
     def draw(self, display):
         if not self.visible:
