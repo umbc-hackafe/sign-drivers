@@ -53,7 +53,7 @@ class Message:
                                            reverse=True, delay=.25)
             elif effect_type == "shake":
                 effect = graphics.Animator(self.label, attr="y", max=6, min=2,
-                                           delay=.02, reverse=True)
+                                           delay=.01, reverse=True)
 
             if effect:
                 self.effects.append(effect)
