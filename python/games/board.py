@@ -75,6 +75,7 @@ class MessageBoard(game.Game):
 
         self.api.add_url_rule('/add_message', 'add_message', self.add_message, methods=['POST'])
         self.api.add_url_rule('/remove_message/<id>', 'remove_message', self.remove_message, methods=['GET', 'POST'])
+        self.api.add_url_rule('/clear', 'clear', self.clear, methods=['POST'])
 
         self.server = simple_server.make_server('', 8800, self.api)
 
@@ -112,6 +113,10 @@ class MessageBoard(game.Game):
         with self.frame_lock:
             del self.messages[id]
         return ''
+
+    def clear(self):
+        with self.frame_lock:
+            self.messages = {}
 
     def loop(self):
         super().loop()
