@@ -84,6 +84,9 @@ class MessageBoard(game.Game):
 
         self.ids = 0
 
+        # Add an extra sprite on a dead pixel
+        self.sprites.add(graphics.Rectangle(1, 1, x=109, y=1))
+
         self.cycle = itertools.chain.from_iterable(
             mode() for mode in itertools.chain.from_iterable(
                 random.shuffle(x) or x for x in itertools.repeat(modes)))
