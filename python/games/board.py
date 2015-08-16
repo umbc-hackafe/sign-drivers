@@ -64,14 +64,9 @@ class MessageBoard(game.Game):
 
         self.messages = {}
 
-        modes = [
-            self.display_messages
-        ]
-
         self.frame_lock = threading.Lock()
 
         self.api = flask.Flask(__name__)
-        self.api.debug = True
 
         self.api.add_url_rule('/add_message', 'add_message', self.add_message, methods=['POST'])
         self.api.add_url_rule('/remove_message/<id>', 'remove_message', self.remove_message, methods=['GET', 'POST'])
@@ -84,9 +79,9 @@ class MessageBoard(game.Game):
 
         self.ids = 0
 
-        self.cycle = itertools.chain.from_iterable(
-            mode() for mode in itertools.chain.from_iterable(
-                random.shuffle(x) or x for x in itertools.repeat(modes)))
+        self.cur_msg = None
+        self.switch_time = 0
+        self.queue = self.messages_gen()
 
     def stop(self):
         super().stop()
@@ -117,35 +112,38 @@ class MessageBoard(game.Game):
     def clear(self):
         with self.frame_lock:
             self.messages = {}
+        return ''
 
     def loop(self):
         super().loop()
 
-        next(self.cycle)
+        if time.time() >= self.switch_time:
+            if self.cur_msg:
+                self.sprites.remove(self.cur_msg.label)
+                self.sprites.difference_update(set(self.cur_msg.effects))
 
-    def display_messages(self):
-        messages = None
-        with self.frame_lock:
-            messages = list(self.messages.values())
+            self.cur_msg = next(self.queue)
 
-        for message in messages:
-            self.sprites.add(message.label)
-            for effect in message.effects:
-                self.sprites.add(effect)
+            if self.cur_msg:
+                self.sprites.add(self.cur_msg.label)
+                self.sprites.update(set(self.cur_msg.effects))
 
-            run_until = time.time() + message.priority
+                self.switch_time = time.time() + self.cur_msg.priority
+            else:
+                self.switch_time = time.time() + .5
 
-            while time.time() < run_until:
-                yield
+    def messages_gen(self):
+        while True:
+            msgs = []
+            with self.frame_lock:
+                msgs = list(self.messages.values())
 
-            for effect in message.effects:
-                self.sprites.remove(effect)
-            self.sprites.remove(message.label)
+            if msgs:
+                yield from list(self.messages.values())
+            else:
+                yield None
 
-        self.graphics.clear()
-        self.graphics.draw(self.serial)
-
-        with self.frame_lock:
-            self.messages = {k: m for k, m in self.messages.items() if m.expiration > time.time()}
+            with self.frame_lock:
+                self.messages = {k: m for k, m in self.messages.items() if m.expiration > time.time()}
 
 GAME = MessageBoard
