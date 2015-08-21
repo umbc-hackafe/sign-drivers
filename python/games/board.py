@@ -2,6 +2,7 @@ import itertools
 import threading
 import datetime
 import graphics
+import requests
 import random
 import driver
 import flask
@@ -58,6 +59,20 @@ class Message:
             if effect:
                 self.effects.append(effect)
 
+TEMPERATURE = 0
+
+def update_temp():
+    while True:
+        try:
+            global TEMPERATURE
+            TEMPERATURE = requests.get("http://idiotic.hackafe.net/api/item/Living_Room_Temperature/state").json()["result"]
+            time.sleep(60)
+        except:
+            time.sleep(5)
+
+def get_default_message():
+    return Message("{:%H:%M:%S}   {:.1f}C".format(datetime.datetime.now(), TEMPERATURE), priority=.1)
+
 class MessageBoard(game.Game):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -76,6 +91,9 @@ class MessageBoard(game.Game):
 
         self.server_thread = threading.Thread(target=self.server.serve_forever, daemon=True)
         self.server_thread.start()
+
+        self.update_temp_thread = threading.Thread(target=update_temp, daemon=True)
+        self.update_temp_thread.start()
 
         self.ids = 0
 
@@ -141,7 +159,7 @@ class MessageBoard(game.Game):
             if msgs:
                 yield from list(self.messages.values())
             else:
-                yield None
+                yield get_default_message()
 
             with self.frame_lock:
                 self.messages = {k: m for k, m in self.messages.items() if m.expiration > time.time()}
