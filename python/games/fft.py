@@ -1,3 +1,4 @@
+import json
 import graphics
 import driver
 import game
@@ -32,6 +33,9 @@ class FFT(game.Game):
         for i in range(0, int(self.bufferLength/self.periodsize)):
             self.buffer.extend(np.fromstring(self.inp.read()[1], dtype="<h"))
 
+        with open("./fft_data", "r") as datafile:
+            self.noiseOffset = json.loads(datafile.read())
+
         super().__init__(*args, **kwargs)
 
     def loop(self):
@@ -41,8 +45,12 @@ class FFT(game.Game):
         buckets = []
         for i in range(len(fftData)):
             buckets.append(fftData[i]*math.log(i+1))
-        buckets = np.array_split(fftData, cols)
+        buckets = np.array_split(fftData[:-3000], cols)
         buckets = [math.log(sum(x)/len(x)+1)-self.offset for x in buckets]
+#        with open("./fft_data", "w") as datafile:
+#            datafile.write(json.dumps(buckets))
+        for i in range(len(buckets)):
+            buckets[i] -= self.noiseOffset[i]
         buckets = [min(int((x*rows)/self.plotMax),self.plotMax*rows) for x in buckets]
         self.graphics.buffer = []
         for i in range(rows):
