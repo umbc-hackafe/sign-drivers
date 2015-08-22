@@ -11,6 +11,7 @@ import game
 import time
 import sys
 from wsgiref import simple_server
+from collections import OrderedDict
 
 class Message:
     def __init__(self, text, priority=5, expiration=None, effects=[]):
@@ -77,7 +78,7 @@ class MessageBoard(game.Game):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.messages = {}
+        self.messages = OrderedDict()
 
         self.frame_lock = threading.Lock()
 
@@ -129,7 +130,7 @@ class MessageBoard(game.Game):
 
     def clear(self):
         with self.frame_lock:
-            self.messages = {}
+            self.messages = OrderedDict()
         return ''
 
     def loop(self):
