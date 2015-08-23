@@ -14,14 +14,17 @@ from wsgiref import simple_server
 from collections import OrderedDict
 
 class Message:
-    def __init__(self, text, priority=5, expiration=None, effects=[]):
+    def __init__(self, text, priority=5, expiration=None, effects=[], lifetime=None):
         self.text = text
 
         self.label = graphics.TextSprite(text, width=5, height=7, y=4)
         self.label.x = (112 - self.label.size()) // 2
 
         self.priority = priority
-        self.expiration = expiration or 2147483647
+        if expiration:
+            self.expiration = expiration or 2147483647
+        elif lifetime:
+            self.expiration = time.time() + lifetime
         self.effects = []
 
         for effect_type in effects:
@@ -110,6 +113,7 @@ class MessageBoard(game.Game):
     def add_message(self):
         text = request.form.get("text", "?")
         priority = float(request.form.get("priority", 5))
+        lifetime = float(request.form.get("lifetime", 0))
         expiration = float(request.form.get("expiration", 0))
         effects = filter(bool, request.form.get("effects", "").split(","))
         name = request.form.get("name", None)
@@ -119,7 +123,7 @@ class MessageBoard(game.Game):
             self.ids += 1
 
         with self.frame_lock:
-            self.messages[name] = Message(text, priority, expiration, effects)
+            self.messages[name] = Message(text, priority, expiration, effects, lifetime)
 
         return name
 
