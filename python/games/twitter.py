@@ -22,7 +22,7 @@ MAGFEST_LOGO = """        XXX         xxxxxxxxxxxxxx          xxxxxxxxxxxxxxx   
         XXX         xX          XX          xX           Xx          Xx          Xx         xxXXXXXX  X   X   x 
         XXX         XX          Xx          xX           Xx          Xx          Xx      XXxxXXXXXXX   X  X   X 
        XXXXX        XX          XX          XX           Xx          Xx          Xx   XXXXXXXXXXXXXX   x  X   X 
-     XXXXXXXX XXXX  XX          xX          xX           XxxxxxxxxxxxXx          XxxxxXX XXXXXXXXXXX  X   X   x 
+     XXXXXXXX XXXX  XX          xXxxxxxxxxxxxX           XxxxxxxxxxxxXx          XxxxxXX XXXXXXXXXXX  X   X   x 
 XXXXXXXXXXXXXXXXXXXXXx          XXXXXXXXXXXXXX           XXXXXXXXXXXXXx          XXXXXXX    xXXXXXXX X   x   X  
 XXXXXXXXXXXXXXXXXX                                                                           xXXXXXX    X    X  
 XXXXXXXXXXXXXXXXXX    X  XX       X       XXXXXX      XXXXXX     XXXXXX     XXXXXX      XXXXX xXXXX        X   
