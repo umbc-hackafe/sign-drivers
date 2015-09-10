@@ -17,43 +17,49 @@ t = twython.Twython(app_key=TWITTER_APP_KEY,
 class Twitter(game.Game):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
-    self.nl = iter([])
-    
-  def scroll(self, title, text):
-    titlesprite = graphics.TextSprite(title, x=0, y=0, width=5, height=7)
-    self.sprites.add(titlesprite)
-    sprite = graphics.TextSprite(text, x=112, y=8, width=5, height=7)
-    self.sprites.add(sprite)
-    while (-1)*((sprite.width+1)*len(text)) < sprite.x:
-      self.graphics.clear()
-      for x in self.sprites:
-        x.draw(self.graphics)
-      time.sleep(0.02)
-      sprite.x -= 3
-      self.graphics.draw(self.serial)
-      yield
-    self.graphics.clear()
-    self.sprites.remove(sprite)
-    self.sprites.remove(titlesprite)
+    self.nl = self.tweets()
 
-  def tweetloop(self, tweets):
-    twats = {x['id']:(x['user']['screen_name'], ' '.join(x['text'].split("\n"))) for x in tweets}
-    for i in twats.keys():
-      yield from self.scroll("@"+twats[i][0], twats[i][1])
-    yield from self.scroll("#Hackafe", "Tweet us to get your text here!")
-    
+    self.next_slide = 0
+
+    self.head = graphics.TextSprite('#MAGSign', x=0, y=0, width=5, height=7)
+    self.sprites.add(self.head)
+    self.body = graphics.TextSprite('allan please add text', x=112, y=8, width=5, height=7)
+    self.sprites.add(self.body)
+
+  def update_body(text):
+    self.sprites.clear()
+
+    self.sprites.add(self.head)
+    self.body.set_text(text)
+    self.body.x = 112
+    self.sprites.add(self.body)
+    self.sprites.add(graphics.Animator(self.body, attr="x", max=112,
+                                       min=-self.body.size(), loop=True,
+                                       delay=.04, step=-1))
+
+  def tweets(self):
+    tweets = {}
+    while True:
+      yield "Tweet #MAGsign", "Make this sign say stuff!", 20
+
+      try:
+        tweets = t.search(q='#magsign OR #magclassic', count=10)
+        #tweets = t.search(q='#magsign', count=10)
+      except twython.exceptions.TwythonError:
+        pass
+
+      twats = {x['id']:(x['user']['screen_name'], ' '.join(x['text'].split("\n"))) for x in tweets}
+      for twat in twats.values():
+        yield '@' + twat[0], twat[1], 15
 
   def loop(self):
-    try:
-        next(self.nl)
-    except StopIteration:
-        try:
-            search = t.search(q='#hackafe OR #bitcamp', count=10)
-        except twython.exceptions.TwythonError:
-            pass
-        tweets = search['statuses']
-        self.nl = self.tweetloop(tweets)
-        time.sleep(2)
+    super().loop()
 
+    if time.time() >= self.next_slide:
+      name, text, delay = next(self.nl)
+
+      self.head.set_text(name)
+      self.update_body(text)
+      self.next_slide = time.time() + delay
 
 GAME = Twitter
