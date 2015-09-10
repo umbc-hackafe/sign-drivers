@@ -15,15 +15,15 @@ t = twython.Twython(app_key=TWITTER_APP_KEY,
             oauth_token_secret=TWITTER_ACCESS_TOKEN_SECRET)
 
 LOGO_DIMS = (112, 15)
-MAGFEST_LOGO = """        XXX         xxxxxxxxxxxxxx          xxxxxxxxxxxxxxx          xxxxxxxxxxxxxx               XX       X    
-        XXX         XX          XX          XX           Xx          XxxxxxxxxxxxXx              XXX        X   
-        XXX         XX          xX          xX           Xx          Xx          Xx            XXXXX    X    x  
-        XXX         XX          xX          XX           Xx          Xx          Xx          xXXXXXX X   X   X  
-        XXX         xX          XX          xX           Xx          Xx          Xx         xxXXXXXX  X   X   x 
-        XXX         XX          Xx          xX           Xx          Xx          Xx      XXxxXXXXXXX   X  X   X 
-       XXXXX        XX          XX          XX           Xx          Xx          Xx   XXXXXXXXXXXXXX   x  X   X 
-     XXXXXXXX XXXX  XX          xXxxxxxxxxxxxX           XxxxxxxxxxxxXx          XxxxxXX XXXXXXXXXXX  X   X   x 
-XXXXXXXXXXXXXXXXXXXXXx          XXXXXXXXXXXXXX           XXXXXXXXXXXXXx          XXXXXXX    xXXXXXXX X   x   X  
+MAGFEST_LOGO = """        XXX          xxxxxxxxxxxxxx          xxxxxxxxxxxxxxx          xxxxxxxxxxxxxx              XX       X    
+        XXX          Xx          Xx          Xx           xx          xxxxxxxxxxxXxx             XXX        X   
+        XXX          Xx          Xx          Xx           xx          xx          xx           XXXXX    X    x  
+        XXX          Xx          Xx          Xx           xx          xx          xx         xXXXXXX X   X   X  
+        XXX          Xx          Xx          Xx           xx          xx          xx        xxXXXXXX  X   X   x 
+        XXX          Xx          xx          Xx           xx          xx          xx     XXxxXXXXXXX   X  X   X 
+       XXXXX         Xx          Xx          Xx           xx          xx          xx  XXXXXXXXXXXXXX   x  X   X 
+     XXXXXXXX XXXX   Xx          XxxxxxxxxxxxXx           xxxxxxxxxxxXxx          xxxxXX XXXXXXXXXXX  X   X   x 
+XXXXXXXXXXXXXXXXXXXXXxx          XXXXXXXXXXXXXx           XXXXXXXXXXXXxx          XXXXXX    xXXXXXXX X   x   X  
 XXXXXXXXXXXXXXXXXX                                                                           xXXXXXX    X    X  
 XXXXXXXXXXXXXXXXXX    X  XX       X       XXXXXX      XXXXXX     XXXXXX     XXXXXX      XXXXX xXXXX        X   
 xXXXXXXXXXXXXXXXXX    XX XX      X X      XX          X          XXX        XXX           X     XXX       X    
