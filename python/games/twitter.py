@@ -26,7 +26,7 @@ class Twitter(game.Game):
     self.body = graphics.TextSprite('allan please add text', x=112, y=8, width=5, height=7)
     self.sprites.add(self.body)
 
-  def update_body(text):
+  def update_body(self, text):
     self.sprites.clear()
 
     self.sprites.add(self.head)
