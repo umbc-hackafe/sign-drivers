@@ -26,10 +26,10 @@ MAGFEST_LOGO = """
      XXXXXXXX XXXX  XX          xX          xX           XxxxxxxxxxxxXx          XxxxxXX XXXXXXXXXXX  X   X   x 
 XXXXXXXXXXXXXXXXXXXXXx          XXXXXXXXXXXXXX           XXXXXXXXXXXXXx          XXXXXXX    xXXXXXXX X   x   X  
 XXXXXXXXXXXXXXXXXX                                                                           xXXXXXX    X    X  
-XXXXXXXXXXXXXXXXXX   XX  XX       X        XXXXX      XXXXXX     XXXXXX     XXXXXX      XXXXX  xXXXX        X   
-xXXXXXXXXXXXXXXXXX   XXXXXX     XXXXX     XX XXx      XXXXX      XXXXX      xxxxxx        X      XXX       X    
-XXXXXXXXXXXXXXXXXX   X X  x     X   X      XXXXX      X          XXXXX      xXXXXX        x       xX            
-                                                                                                                
+XXXXXXXXXXXXXXXXXX    X  XX       X       XXXXXX      XXXXXX     XXXXXX     XXXXXX      XXXXX xXXXX        X   
+xXXXXXXXXXXXXXXXXX    XX XX      X X      XX          X          XXX        XXX           X     XXX       X    
+XXXXXXXXXXXXXXXXXX    X X x     XXXXX     XX  XX      XXXXX      XXXXX         XXX        x      xX            
+                      X X X     X   X     XXXxXX      X          XXXXXX     XXXXXX        X                     
 """
 
 class Twitter(game.Game):
