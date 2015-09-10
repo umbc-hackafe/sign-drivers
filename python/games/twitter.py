@@ -59,13 +59,15 @@ class Twitter(game.Game):
 
   def set_graphic(self, show=True, length=-1):
     self.sprites.clear()
-    self.no_refresh = time.time() + length
 
     if show:
       for y, line in enumerate(MAGFEST_LOGO.split('\n')):
         for x, char in enumerate(line):
           if char != ' ':
             self.sprites.add(graphics.Rectangle(1, 1, x=x, y=y))
+
+      self.loop()
+      self.no_refresh = time.time() + length
     else:
       self.update_body('')
 
