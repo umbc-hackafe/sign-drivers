@@ -35,7 +35,7 @@ class Twitter(game.Game):
     self.sprites.add(self.body)
     self.sprites.add(graphics.Animator(self.body, attr="x", max=112,
                                        min=-self.body.size(), loop=True,
-                                       delay=.04, step=-1))
+                                       delay=.03, step=-1))
 
   def tweets(self):
     tweets = {}
