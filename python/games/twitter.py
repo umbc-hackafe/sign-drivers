@@ -43,8 +43,9 @@ class Twitter(game.Game):
       yield "Tweet #MAGsign", "Make this sign say stuff!", 20
 
       try:
-        tweets = t.search(q='#magsign OR #magclassic', count=10)
-        #tweets = t.search(q='#magsign', count=10)
+        tweet_res = t.search(q='#magsign OR #magclassic', count=10)
+        #tweet_res = t.search(q='#magsign', count=10)
+        tweets = tweet_res['statuses']
       except twython.exceptions.TwythonError:
         pass
 
