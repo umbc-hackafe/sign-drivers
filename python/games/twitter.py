@@ -51,7 +51,7 @@ class Twitter(game.Game):
 
       twats = {x['id']:(x['user']['screen_name'], ' '.join(x['text'].split("\n"))) for x in tweets}
       for twat in twats.values():
-        yield '@' + twat[0], twat[1], 15
+        yield '@' + twat[0], twat[1], 20
 
   def loop(self):
     super().loop()
