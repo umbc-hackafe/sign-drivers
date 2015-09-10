@@ -14,6 +14,24 @@ t = twython.Twython(app_key=TWITTER_APP_KEY,
             oauth_token=TWITTER_ACCESS_TOKEN, 
             oauth_token_secret=TWITTER_ACCESS_TOKEN_SECRET)
 
+MAGFEST_LOGO = """
+                                                                                                                
+        XXX         xxxxxxxxxxxxxx          xxxxxxxxxxxxxxx          xxxxxxxxxxxxxx               XX       X    
+        XXX         XX          XX          XX           Xx          XxxxxxxxxxxxXx              XXX        X   
+        XXX         XX          xX          xX           Xx          Xx          Xx            XXXXX    X    x  
+        XXX         XX          xX          XX           Xx          Xx          Xx          xXXXXXX X   X   X  
+        XXX         xX          XX          xX           Xx          Xx          Xx         xxXXXXXX  X   X   x 
+        XXX         XX          Xx          xX           Xx          Xx          Xx      XXxxXXXXXXX   X  X   X 
+       XXXXX        XX          XX          XX           Xx          Xx          Xx   XXXXXXXXXXXXXX   x  X   X 
+     XXXXXXXX XXXX  XX          xX          xX           XxxxxxxxxxxxXx          XxxxxXX XXXXXXXXXXX  X   X   x 
+XXXXXXXXXXXXXXXXXXXXXx          XXXXXXXXXXXXXX           XXXXXXXXXXXXXx          XXXXXXX    xXXXXXXX X   x   X  
+XXXXXXXXXXXXXXXXXX                                                                           xXXXXXX    X    X  
+XXXXXXXXXXXXXXXXXX   XX  XX       X        XXXXX      XXXXXX     XXXXXX     XXXXXX      XXXXX  xXXXX        X   
+xXXXXXXXXXXXXXXXXX   XXXXXX     XXXXX     XX XXx      XXXXX      XXXXX      xxxxxx        X      XXX       X    
+XXXXXXXXXXXXXXXXXX   X X  x     X   X      XXXXX      X          XXXXX      xXXXXX        x       xX            
+                                                                                                                
+"""
+
 class Twitter(game.Game):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
@@ -37,10 +55,22 @@ class Twitter(game.Game):
                                        min=(107 - self.body.size() if self.body.size() > 102 else 5), reverse=True,
                                        delay=.06, step=-2))
 
+  def set_graphic(self, show=True):
+    self.sprites.clear()
+
+    if show:
+      for y, line in enumerate(MAGFEST_LOGO.split('\n')):
+        for x, char in enumerate(line):
+          if char != ' ':
+            self.sprites.add(graphics.Rectangle(1, 1, x=x, y=y))
+    else:
+      self.update_body('')
+
   def tweets(self):
     tweets = {}
     while True:
-      yield "Tweet #MAGsign", "Make this sign say stuff!", 20
+      yield None, None, 10
+      yield "Tweet #MAGsign", "Make this sign say stuff!", 25
 
       try:
         tweet_res = t.search(q='#magsign OR #magclassic', count=10)
@@ -59,8 +89,12 @@ class Twitter(game.Game):
     if time.time() >= self.next_slide:
       name, text, delay = next(self.nl)
 
-      self.head.set_text(name)
-      self.update_body(text)
+      if name is None and text is None:
+        self.set_graphic()
+      else:
+        self.head.set_text(name)
+        self.update_body(text)
+
       self.next_slide = time.time() + delay
 
 GAME = Twitter
