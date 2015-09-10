@@ -38,6 +38,7 @@ class Twitter(game.Game):
     self.nl = self.tweets()
 
     self.next_slide = 0
+    self.no_refresh = 0
 
     self.head = graphics.TextSprite('#MAGSign', x=0, y=0, width=5, height=7)
     self.sprites.add(self.head)
@@ -47,6 +48,7 @@ class Twitter(game.Game):
   def update_body(self, text):
     self.sprites.clear()
 
+    self.no_refresh = 0
     self.sprites.add(self.head)
     self.body.set_text(text)
     self.body.x = 112
@@ -55,8 +57,9 @@ class Twitter(game.Game):
                                        min=(107 - self.body.size() if self.body.size() > 102 else 5), reverse=True,
                                        delay=.06, step=-2))
 
-  def set_graphic(self, show=True):
+  def set_graphic(self, show=True, length=-1):
     self.sprites.clear()
+    self.no_refresh = time.time() + length
 
     if show:
       for y, line in enumerate(MAGFEST_LOGO.split('\n')):
@@ -84,13 +87,16 @@ class Twitter(game.Game):
         yield '@' + twat[0], twat[1], 20
 
   def loop(self):
+    if time.time() < self.no_refresh:
+      return
+
     super().loop()
 
     if time.time() >= self.next_slide:
       name, text, delay = next(self.nl)
 
       if name is None and text is None:
-        self.set_graphic()
+        self.set_graphic(length=delay)
       else:
         self.head.set_text(name)
         self.update_body(text)
