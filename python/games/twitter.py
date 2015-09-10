@@ -14,9 +14,8 @@ t = twython.Twython(app_key=TWITTER_APP_KEY,
             oauth_token=TWITTER_ACCESS_TOKEN, 
             oauth_token_secret=TWITTER_ACCESS_TOKEN_SECRET)
 
-MAGFEST_LOGO = """
-                                                                                                                
-        XXX         xxxxxxxxxxxxxx          xxxxxxxxxxxxxxx          xxxxxxxxxxxxxx               XX       X    
+LOGO_DIMS = (112, 15)
+MAGFEST_LOGO = """        XXX         xxxxxxxxxxxxxx          xxxxxxxxxxxxxxx          xxxxxxxxxxxxxx               XX       X    
         XXX         XX          XX          XX           Xx          XxxxxxxxxxxxXx              XXX        X   
         XXX         XX          xX          xX           Xx          Xx          Xx            XXXXX    X    x  
         XXX         XX          xX          XX           Xx          Xx          Xx          xXXXXXX X   X   X  
