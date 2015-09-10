@@ -69,7 +69,7 @@ class Twitter(game.Game):
   def tweets(self):
     tweets = {}
     while True:
-      yield None, None, 10
+      yield None, None, 35
       yield "Tweet #MAGsign", "Make this sign say stuff!", 25
 
       try:
