@@ -74,9 +74,10 @@ class Twitter(game.Game):
   def tweets(self):
     tweets = {}
     while True:
-      yield None, None, 35
-      yield None, None, 35
-      yield "Tweet #MAGsign", "Make this sign say stuff!", 25
+      yield None, None, 30
+      yield None, None, 30
+      yield "MAGCLASSIC", "T E C H O P S", 30
+      yield "Tweet #MAGsign", "Make this sign say stuff!", 30
 
       try:
         #tweet_res = t.search(q='#magsign OR #magclassic', count=10)
