@@ -53,7 +53,7 @@ class Twitter(game.Game):
     self.body.set_text(text)
     self.body.x = 112
     self.sprites.add(self.body)
-    self.sprites.add(graphics.Animator(self.body, attr="x", max=(5 if self.body.size() > 102 else 107),
+    self.sprites.add(graphics.Animator(self.body, attr="x", max=(5 if self.body.size() > 102 else 107 - self.body.size()),
                                        min=(107 - self.body.size() if self.body.size() > 102 else 5), reverse=True,
                                        delay=.06, step=-2))
 
