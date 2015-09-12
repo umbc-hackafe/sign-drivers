@@ -51,7 +51,7 @@ class Twitter(game.Game):
     self.no_refresh = 0
     self.sprites.add(self.head)
     self.body.set_text(text)
-    self.body.x = 112
+    self.body.x = (5 if self.body.size() > 102 else 107 - self.body.size())
     self.sprites.add(self.body)
     self.sprites.add(graphics.Animator(self.body, attr="x", max=(5 if self.body.size() > 102 else 107 - self.body.size()),
                                        min=(107 - self.body.size() if self.body.size() > 102 else 5), reverse=True,
