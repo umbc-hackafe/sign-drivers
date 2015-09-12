@@ -40,7 +40,7 @@ class Twitter(game.Game):
     self.next_slide = 0
     self.no_refresh = 0
 
-    self.head = graphics.TextSprite('#TechOpsPanel', x=5, y=0, width=5, height=7)
+    self.head = graphics.TextSprite('#TechOpsPanel', x=0, y=0, width=5, height=7)
     self.sprites.add(self.head)
     self.body = graphics.TextSprite('this should not happen', x=107, y=8, width=5, height=7)
     self.sprites.add(self.body)
