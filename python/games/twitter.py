@@ -55,7 +55,7 @@ class Twitter(game.Game):
     self.sprites.add(self.body)
     self.sprites.add(graphics.Animator(self.body, attr="x", max=(5 if self.body.size() > 102 else 107 - self.body.size()),
                                        min=(107 - self.body.size() if self.body.size() > 102 else 5), reverse=True,
-                                       delay=.06, step=-2, pause=1))
+                                       delay=.06, step=-2))
 
   def set_graphic(self, show=True, length=-1):
     self.sprites.clear()
