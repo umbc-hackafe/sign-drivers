@@ -40,9 +40,9 @@ class Twitter(game.Game):
     self.next_slide = 0
     self.no_refresh = 0
 
-    self.head = graphics.TextSprite('#MAGSign', x=0, y=0, width=5, height=7)
+    self.head = graphics.TextSprite('#TechOps', x=0, y=0, width=5, height=7)
     self.sprites.add(self.head)
-    self.body = graphics.TextSprite('allan please add text', x=112, y=8, width=5, height=7)
+    self.body = graphics.TextSprite('this should not happen', x=112, y=8, width=5, height=7)
     self.sprites.add(self.body)
 
   def update_body(self, text):
@@ -55,7 +55,7 @@ class Twitter(game.Game):
     self.sprites.add(self.body)
     self.sprites.add(graphics.Animator(self.body, attr="x", max=(5 if self.body.size() > 102 else 107 - self.body.size()),
                                        min=(107 - self.body.size() if self.body.size() > 102 else 5), reverse=True,
-                                       delay=.06, step=-2))
+                                       delay=.06, step=-2, pause=1))
 
   def set_graphic(self, show=True, length=-1):
     self.sprites.clear()
@@ -77,11 +77,11 @@ class Twitter(game.Game):
       yield None, None, 30
       yield None, None, 30
       yield "MAGCLASSIC", "T E C H O P S", 30
-      yield "Tweet #MAGsign", "Make this sign say stuff!", 30
+      yield "Tweet #TechOps", "Make this sign say stuff", 30
 
       try:
         #tweet_res = t.search(q='#magsign OR #magclassic', count=10)
-        tweet_res = t.search(q='#magsign', count=10)
+        tweet_res = t.search(q='#TechOps', count=10)
         tweets = tweet_res['statuses']
       except twython.exceptions.TwythonError:
         pass
