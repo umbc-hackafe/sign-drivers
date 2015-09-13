@@ -40,7 +40,7 @@ class Twitter(game.Game):
     self.next_slide = 0
     self.no_refresh = 0
 
-    self.head = graphics.TextSprite('#TechOpsPanel', x=0, y=0, width=5, height=7)
+    self.head = graphics.TextSprite('#MAGSign', x=0, y=0, width=5, height=7)
     self.sprites.add(self.head)
     self.body = graphics.TextSprite('this should not happen', x=107, y=8, width=5, height=7)
     self.sprites.add(self.body)
@@ -77,11 +77,11 @@ class Twitter(game.Game):
       yield None, None, 30
       yield None, None, 30
       yield "MAGCLASSIC", "T E C H O P S", 30
-      yield "Tweet #TechOpsPanel", "Make this sign say stuff", 30
+      yield "Tweet #MAGSign", "Make this sign say stuff", 30
 
       try:
         #tweet_res = t.search(q='#magsign OR #magclassic', count=10)
-        tweet_res = t.search(q='#TechOpsPanel', count=10)
+        tweet_res = t.search(q='#MAGSign', count=10)
         tweets = tweet_res['statuses']
       except twython.exceptions.TwythonError:
         pass
