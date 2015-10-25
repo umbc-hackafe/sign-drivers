@@ -25,6 +25,8 @@ class Message:
             self.expiration = expiration or 2147483647
         elif lifetime:
             self.expiration = time.time() + lifetime
+        else:
+            self.expiration = 2147483647
         self.effects = []
 
         for effect_type in effects:
