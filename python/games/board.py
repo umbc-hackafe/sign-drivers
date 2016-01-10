@@ -71,7 +71,7 @@ def update_temp():
     while True:
         try:
             global TEMPERATURE
-            TEMPERATURE = requests.get("http://idiotic.hackafe.net/api/item/Living_Room_Temperature/state").json()["result"]
+            TEMPERATURE = requests.get("http://idiotic.hackafe.net/api/item/Average_Temperature/state").json()["result"]
             time.sleep(60)
         except:
             time.sleep(5)
