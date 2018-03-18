@@ -44,6 +44,8 @@ class Play(object):
     def run(self, args):
         if args.dummy:
             self.serial = driver.DummyDriver(self.stdscr)
+        elif args.flaschen:
+            self.serial = driver.FlaschenDriver(args.flaschen)
         else:
             self.serial = driver.SerialDriver(args.serial_port)
 
@@ -71,6 +73,7 @@ def main(stdscr, argv):
     parser.add_argument("--stdin", "-i", help="Read input from stdin", action="store_true")
     parser.add_argument("--game", "-g", help="The game to play", choices=play.games.keys(), default='menu')
     parser.add_argument("--dummy", "-d", help="Use a dummy terminal output", action="store_true")
+    parser.add_argument("--flaschen", "-t", help="Output to a flaschen-taschen server", type=str, default="")
 
     args = parser.parse_args(argv)
 

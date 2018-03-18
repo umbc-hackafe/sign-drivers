@@ -1,3 +1,4 @@
+import flaschen
 import serial
 
 class SerialDriver:
@@ -25,3 +26,22 @@ class DummyDriver:
         self.stdscr.addstr(16, 0, "+" + "-" * 112 + "+")
         self.stdscr.refresh()
 
+class FlaschenDriver:
+    def __init__(self, host, *args, **kwargs):
+        self.display = flaschen.Flaschen(host, 1337, 512, 32, 16, False)
+
+    def draw(self, fb):
+        self.display.clear()
+        for x in range(117):
+            for y in (0, 16):
+                self.display.set(x, y, (64, 64, 64))
+
+        for x in (0, 116):
+            for y in range(17):
+                self.display.set(x, y, (64, 64, 64))
+
+        for row, vals in enumerate(chunks(list(fb), 112), start=1):
+            for col, val in enumerate(vals, start=1):
+                self.display.set(col, row, (255, 0, 0) if val else (0, 0, 0))
+
+        self.display.send()
